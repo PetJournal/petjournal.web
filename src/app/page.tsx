@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export default function screenRegister() {
+  const [name, setName] = useState('');
   return (
     <>
     <label htmlFor="name">Nome</label>
