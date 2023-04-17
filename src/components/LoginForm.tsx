@@ -56,7 +56,7 @@ function LoginForm() {
     event.preventDefault();
     setLoading(true);
 
-    fetch('/logi', {
+    fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify({
         email: emailOrPhoneProps.value,
@@ -98,7 +98,7 @@ function LoginForm() {
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
             >
-              Mostrar
+              {showPassword ? 'Ocultar' : 'Mostrar'}
             </button>
           </div>
           {passwordProps.error && <span>{passwordProps.error}</span>}
