@@ -1,6 +1,7 @@
 // Hooks
 import { FormEvent, useState } from 'react';
 import useInput from '@/hooks/useInput';
+import { useRouter } from 'next/router';
 
 // Components
 import Link from 'next/link';
@@ -44,6 +45,7 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState('');
+  const { push } = useRouter();
 
   const isButtonDisabled = !(
     !!emailOrPhoneProps.value &&
@@ -67,6 +69,8 @@ function LoginForm() {
       .then((data) => {
         setLoading(false);
 
+        push('/profile');
+
         if (data.error) {
           setSubmissionError(data.error);
         }
@@ -78,21 +82,35 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={(event) => handleFormSubmit(event)}>
+    <form
+      className="flex flex-col gap-y-4"
+      onSubmit={(event) => handleFormSubmit(event)}
+    >
       <label>
-        <span>Login</span>
+        <span className="mb-1 block">Login</span>
         <div>
-          <input type="text" {...emailOrPhoneProps} />
-          {emailOrPhoneProps.error && <span>{emailOrPhoneProps.error}</span>}
+          <div className="border border-neutral-300 py-1 px-2">
+            <input
+              type="text"
+              {...emailOrPhoneProps}
+              className="w-full outline-0"
+            />
+          </div>
+          {emailOrPhoneProps.error && (
+            <span className="text-red-600 text-xs">
+              {emailOrPhoneProps.error}
+            </span>
+          )}
         </div>
       </label>
       <label>
-        <span>Senha</span>
+        <span className="mb-1 block">Senha</span>
         <div>
-          <div>
+          <div className="border border-neutral-300 flex py-1 px-2">
             <input
               type={showPassword ? 'text' : 'password'}
               {...passwordProps}
+              className="w-full outline-0"
             />
             <button
               type="button"
@@ -101,22 +119,37 @@ function LoginForm() {
               {showPassword ? 'Ocultar' : 'Mostrar'}
             </button>
           </div>
-          {passwordProps.error && <span>{passwordProps.error}</span>}
+          {passwordProps.error && (
+            <span className="text-red-600 text-xs">{passwordProps.error}</span>
+          )}
         </div>
       </label>
-      <div>
+      <div className="flex justify-between gap-x-2">
         <label>
           <input
+            className="mr-1"
             type="checkbox"
             checked={rememberMe}
             onChange={(event) => setRememberMe(event.target.checked)}
           />
           <span>Lembrar</span>
         </label>
-        <Link href="#">Esqueci minha senha</Link>
+        <Link className="underline" href="#">
+          Esqueci minha senha
+        </Link>
       </div>
-      {submissionError && <span>{submissionError}</span>}
-      <button type="submit" disabled={isButtonDisabled}>
+      {submissionError && (
+        <span className="text-center text-xs text-red-600">
+          {submissionError}
+        </span>
+      )}
+      <button
+        className={`text-center py-2 px-4 bg-neutral-200 ${
+          isButtonDisabled ? 'text-neutral-400' : 'text-neutral-900'
+        }`}
+        type="submit"
+        disabled={isButtonDisabled}
+      >
         {loading ? 'Enviando...' : 'Continuar'}
       </button>
     </form>
