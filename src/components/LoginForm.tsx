@@ -69,11 +69,12 @@ function LoginForm() {
       .then((data) => {
         setLoading(false);
 
-        push('/profile');
-
         if (data.error) {
           setSubmissionError(data.error);
+          return;
         }
+
+        push('/profile');
       })
       .catch(() => {
         setLoading(false);
