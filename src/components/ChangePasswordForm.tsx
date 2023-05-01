@@ -10,6 +10,13 @@ function ChangePasswordForm() {
   const [accountAccess, setAccountAccess] = useState(false);
   const { push } = useRouter();
 
+  const isButtonDisabled = !(
+    !!passwordProps.value &&
+    !!confirmPasswordProps.value &&
+    !passwordProps.error &&
+    !confirmPasswordProps.error
+  );
+
   function validatePassword(value: string) {
     if (!value) {
       return 'Este campo é obrigatório';
@@ -99,7 +106,10 @@ function ChangePasswordForm() {
 
       <button
         type="submit"
-        className="bg-gray-300 py-2 mt-5 w-full rounded-full"
+        className={`bg-gray-300 py-2 mt-5 w-full rounded-full ${
+          isButtonDisabled && 'text-gray-400 bg-gray-100'
+        }`}
+        disabled={isButtonDisabled}
       >
         Redefinir senha
       </button>
