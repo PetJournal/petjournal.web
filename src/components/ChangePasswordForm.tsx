@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
 function ChangePasswordForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   return (
     <form className="max-w-lg">
       <div className="space-y-3">
@@ -8,10 +11,16 @@ function ChangePasswordForm() {
           <label htmlFor="password">Nova senha</label>
           <div className="border-2 flex justify-between p-1 px-2">
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               className="flex-1 outline-none"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
           </div>
         </div>
 
@@ -19,10 +28,16 @@ function ChangePasswordForm() {
           <label htmlFor="confirmPassword">Confirmar senha</label>
           <div className="border-2 flex justify-between p-1 px-2">
             <input
-              type="password"
+              type={showConfirmPassword ? 'text' : 'password'}
               id="confirmPassword"
               className="flex-1 outline-none"
             />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+            >
+              {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
           </div>
         </div>
       </div>
