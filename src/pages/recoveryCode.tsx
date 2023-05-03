@@ -7,7 +7,7 @@ function recoveryCode() {
   const [inputValues, setInputValues] = useState(Array(6).fill(''));
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
 
-  function handleInputChange (index: number, value: string) {
+  function handleInputChange(index: number, value: string) {
     const newInputValues = [...inputValues]
     newInputValues[index] = value;
     setInputValues(newInputValues);
@@ -48,12 +48,13 @@ function recoveryCode() {
                 className={clsx(
                   'w-12 h-16 text-center border-2 rounded-md mt-8',
                   inputValues[index]
-                    ? 'border-[#9A0963] focus:ring-4 focus:ring-[#9A0963] focus:border-transparent focus:outline-none'
-                    : 'border-gray-300 focus:ring-4 focus:ring-[#9A0963] focus:border-transparent focus:outline-none'
+                    ? 'border-custom-purple focus:ring-4 focus:ring-custom-purple focus:border-transparent focus:outline-none'
+                    : 'border-gray-300 focus:ring-4 focus:ring-custom-purple focus:border-transparent focus:outline-none'
                 )}
               />
             ))}
         </div>
+        <button className="mt-8 bg-custom-purple hover:bg-custom-purple-hover text-white font-bold py-4 px-24 rounded-full">Enviar</button>
       </div>
 
 

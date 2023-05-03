@@ -9,7 +9,24 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'custom-purple' : '#9A0963',
+        'custom-purple-hover': '#6E0046',
+      },
+      textColor: {
+        'custom-purple' : '#9A0963',
+        'custom-purple-hover': '#6E0046',
+      },
+      borderColor: {
+        'custom-purple' : '#9A0963',
+        'custom-purple-hover': '#6E0046',
+      },
+      ringColor: {
+        'custom-purple' : '#9A0963',
+        'custom-purple-hover': '#6E0046',
+      }
+    },
   },
   plugins: [],
 };
