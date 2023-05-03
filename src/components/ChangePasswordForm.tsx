@@ -22,7 +22,7 @@ function ChangePasswordForm() {
       return 'Este campo é obrigatório';
     }
     if (value.length < 8) {
-      return 'A senha informada não atende os requisitos necessários de 8 caracteres';
+      return 'A senha deve ter pelo menos 8 caracteres';
     }
     return undefined;
   }
