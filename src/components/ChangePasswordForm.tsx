@@ -7,6 +7,7 @@ function ChangePasswordForm() {
   const confirmPasswordProps = useInput({ validate: validateConfirmPassword });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [accountAccess, setAccountAccess] = useState(false);
   const { push } = useRouter();
 
@@ -14,7 +15,8 @@ function ChangePasswordForm() {
     !!passwordProps.value &&
     !!confirmPasswordProps.value &&
     !passwordProps.error &&
-    !confirmPasswordProps.error
+    !confirmPasswordProps.error &&
+    !confirmPasswordError
   );
 
   function validatePassword(value: string) {
@@ -24,6 +26,11 @@ function ChangePasswordForm() {
     if (value.length < 8) {
       return 'A senha deve ter pelo menos 8 caracteres';
     }
+    if (value !== confirmPasswordProps.value) {
+      setConfirmPasswordError('As senhas devem ser idênticas');
+      return;
+    }
+    setConfirmPasswordError('');
     return undefined;
   }
 
@@ -32,17 +39,17 @@ function ChangePasswordForm() {
       return 'Este campo é obrigatório';
     }
     if (value !== passwordProps.value) {
-      return 'As senhas devem ser idênticas';
+      setConfirmPasswordError('As senhas devem ser idênticas');
+      return;
     }
+    setConfirmPasswordError('');
     return undefined;
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!passwordProps.error && !confirmPasswordProps.error) {
-      push('/login');
-    }
+    push('/login');
   }
 
   return (
@@ -50,7 +57,7 @@ function ChangePasswordForm() {
       <div className="space-y-3">
         <div>
           <label htmlFor="password">Nova senha</label>
-          <div className="border-2 flex justify-between p-1 px-2">
+          <div className="flex justify-between p-1 px-2 border-2">
             <input
               type={showPassword ? 'text' : 'password'}
               {...passwordProps}
@@ -71,7 +78,7 @@ function ChangePasswordForm() {
 
         <div>
           <label htmlFor="confirmPassword">Confirmar senha</label>
-          <div className="border-2 flex justify-between p-1 px-2">
+          <div className="flex justify-between p-1 px-2 border-2">
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               {...confirmPasswordProps}
@@ -88,6 +95,9 @@ function ChangePasswordForm() {
           {confirmPasswordProps.error && (
             <p className="text-sm text-red-500">{confirmPasswordProps.error}</p>
           )}
+          {!confirmPasswordProps.error && confirmPasswordError && (
+            <p className="text-sm text-red-500">{confirmPasswordError}</p>
+          )}
         </div>
       </div>
 
@@ -98,7 +108,7 @@ function ChangePasswordForm() {
           checked={accountAccess}
           onChange={(event) => setAccountAccess(event.target.checked)}
         />
-        <label htmlFor="check" className="leading-5 pl-2">
+        <label htmlFor="check" className="pl-2 leading-5">
           É necessário que todos os dispositivos acessem sua conta com a nova
           senha?
         </label>
@@ -107,7 +117,7 @@ function ChangePasswordForm() {
       <button
         type="submit"
         className={`bg-gray-300 py-2 mt-5 w-full rounded-full ${
-          isButtonDisabled && 'text-gray-400 bg-gray-100'
+          isButtonDisabled && 'text-gray-400 bg-gray-200'
         }`}
         disabled={isButtonDisabled}
       >
