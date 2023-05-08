@@ -14,6 +14,8 @@ type Inputs = {
 const nameRegex = /^[a-zA-Z]{3,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+const phoneRegex = /^\d{2}\d{9}$/;
+
 
 export default function screenRegister() {
   const {
@@ -135,10 +137,20 @@ export default function screenRegister() {
               className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               type="tel"
               id="telphone"
+              {...register('telPhone', {
+                required: true,
+                pattern: phoneRegex
+              })}
               value={telPhone}
               onChange={handleTelPhone}
               placeholder="Telefone"
             />
+            {errors.telPhone && errors.telPhone.type === 'required' && (
+              <p className="text-red-500">Campo obrigatório</p>
+            )}
+            {errors.telPhone && errors.telPhone.type === 'pattern' && (
+              <p className="text-red-500">Telefone Inválido (Segue o Padrão (DDD) 9XXXX-XXXX)</p>
+            )}
           </div>
         </div>
 
@@ -211,7 +223,7 @@ export default function screenRegister() {
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <button className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            disabled={!hasAgreedToTerms}
+              disabled={!hasAgreedToTerms}
             >
               Continuar
 
