@@ -19,6 +19,12 @@ function ChangePasswordForm() {
     !confirmPasswordError
   );
 
+  const showPasswordMessage =
+    isButtonDisabled &&
+    !passwordProps.error &&
+    !confirmPasswordProps.error &&
+    !confirmPasswordError;
+
   function validatePassword(value: string) {
     const passwordRegex =
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
@@ -74,8 +80,15 @@ function ChangePasswordForm() {
               {showPassword ? 'Ocultar' : 'Mostrar'}
             </button>
           </div>
+          {showPasswordMessage && (
+            <p className="mt-1 text-sm leading-4 text-gray-500">
+              A senha deve ter pelo menos 8 caracteres. Para torná-la mais
+              forte, use letras maiúsculas e minúsculas, números e símbolos como
+              ! @ # $ % & * =
+            </p>
+          )}
           {passwordProps.error && (
-            <p className="text-sm text-red-500">{passwordProps.error}</p>
+            <p className="text-xs text-red-500">{passwordProps.error}</p>
           )}
         </div>
 
@@ -96,10 +109,10 @@ function ChangePasswordForm() {
             </button>
           </div>
           {confirmPasswordProps.error && (
-            <p className="text-sm text-red-500">{confirmPasswordProps.error}</p>
+            <p className="text-xs text-red-500">{confirmPasswordProps.error}</p>
           )}
           {!confirmPasswordProps.error && confirmPasswordError && (
-            <p className="text-sm text-red-500">{confirmPasswordError}</p>
+            <p className="text-xs text-red-500">{confirmPasswordError}</p>
           )}
         </div>
       </div>
