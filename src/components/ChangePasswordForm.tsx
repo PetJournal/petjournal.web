@@ -20,11 +20,14 @@ function ChangePasswordForm() {
   );
 
   function validatePassword(value: string) {
+    const passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+
     if (!value) {
       return 'Este campo é obrigatório';
     }
-    if (value.length < 8) {
-      return 'A senha deve ter pelo menos 8 caracteres';
+    if (!passwordRegex.test(value)) {
+      return 'A senha deve ter ao menos 8 caracteres, com letras maiúsculas, minúsculas, números e símbolos';
     }
     if (value !== confirmPasswordProps.value) {
       setConfirmPasswordError('As senhas devem ser idênticas');
