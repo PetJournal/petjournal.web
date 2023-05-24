@@ -30,6 +30,18 @@ const buildServer = () => {
           return { error: 'Email ou senha incorretos.' };
         }
       });
+      this.post('/forgot-password', (schema, request) => {
+        const { email } = JSON.parse(request.requestBody) as UserModelType;
+        const user = schema.findBy('user', { email } as object);
+
+        if (user) {
+          return {
+            message: 'E-mail enviado com sucesso para sua caixa de entrada.',
+          };
+        } else {
+          return { error: 'Não foi possível encontrar seu e-mail.' };
+        }
+      });
     },
   });
 };

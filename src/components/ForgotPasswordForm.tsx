@@ -1,9 +1,11 @@
 // Hooks
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import useInput from '@/hooks/useInput';
 
 function ForgotPasswordForm() {
   const emailProps = useInput({ validate: validateEmail });
+  const [loading, setLoading] = useState(false);
+  const [submissionMsg, setSubmissionMsg] = useState('');
 
   const isButtonDisabled = !(!!emailProps.value && !emailProps.error);
 
@@ -24,6 +26,28 @@ function ForgotPasswordForm() {
 
   function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    fetch('/api/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: emailProps.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setLoading(false);
+
+        if (data.error) {
+          setSubmissionMsg(data.error);
+          return;
+        }
+
+        setSubmissionMsg(data.message);
+      })
+      .catch((data) => {
+        setLoading(false);
+        setSubmissionMsg(data.error);
+      });
   }
 
   return (
@@ -47,15 +71,19 @@ function ForgotPasswordForm() {
           )}
         </div>
       </label>
+      {submissionMsg && (
+        <span className="text-center text-xs text-red-600">
+          {submissionMsg}
+        </span>
+      )}
       <button
-        className={`text-center py-2 px-4 bg-neutral-200 ${
+        className={`text-center py-2 px-4 bg-neutral-200 rounded-full ${
           isButtonDisabled ? 'text-neutral-400' : 'text-neutral-900'
         }`}
         disabled={isButtonDisabled}
       >
-        Enviar
+        {loading ? 'Enviando...' : 'Enviar'}
       </button>
-      <button className="text-center py-2 px-4 bg-neutral-200">Cancelar</button>
     </form>
   );
 }
