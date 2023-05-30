@@ -14,7 +14,7 @@ function Home() {
 
       <Swiper
         pagination={true}
-        autoplay={{ delay: 4000 }}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
         modules={[Pagination, Autoplay]}
         className="h-40 rounded-lg"
       >
