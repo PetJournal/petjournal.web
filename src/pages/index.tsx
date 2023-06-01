@@ -29,22 +29,22 @@ function Home() {
           <button>ver mais</button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mt-2">
-          <button className="flex items-center justify-center p-4 text-center bg-gray-300 rounded-lg h-36">
+        <div className="grid grid-cols-2 gap-3 mt-2 text-white">
+          <button className="flex items-center justify-center p-4 text-center rounded-lg bg-custom-blue h-36">
             {/* image */}
-            <p>Agenda</p>
+            <p className="font-medium">Agenda</p>
           </button>
-          <button className="flex items-center justify-center p-4 text-center bg-gray-300 rounded-lg h-36">
+          <button className="flex items-center justify-center p-4 text-center rounded-lg bg-custom-purple h-36">
             {/* image */}
-            <p>Localizar seviços</p>
+            <p className="font-medium">Localizar seviços</p>
           </button>
-          <button className="flex items-center justify-center p-4 text-center bg-gray-300 rounded-lg h-36">
+          <button className="flex items-center justify-center p-4 text-center rounded-lg bg-custom-cyan h-36">
             {/* image */}
-            <p>Registro de Vacinas</p>
+            <p className="font-medium">Registro de Vacinas</p>
           </button>
-          <button className="flex items-center justify-center p-4 text-center bg-gray-300 rounded-lg h-36">
+          <button className="flex items-center justify-center p-4 text-center rounded-lg bg-custom-pink h-36">
             {/* image */}
-            <p>Registro de Vermifugos</p>
+            <p className="font-medium">Registro de Vermifugos</p>
           </button>
         </div>
       </div>
