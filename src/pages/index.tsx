@@ -1,19 +1,24 @@
+import Image from 'next/image';
+//Images
 import BottomTab from '@/components/BottomTab';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import firstBanner from '../assets/png/banner-1.png';
+import secondBanner from '../assets/png/banner-2.png';
+import thirdBanner from '../assets/png/banner-3.png';
 import menuIcon from '../assets/svg/menu-burger.svg';
 import calendarIcon from '../assets/svg/calendar.svg';
 import searchIcon from '../assets/svg/search.svg';
 import vaccineIcon from '../assets/svg/vaccine.svg';
 import medicalDropIcon from '../assets/svg/medical-drops.svg';
-import Image from 'next/image';
+//Swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
+import 'swiper/css/pagination';
+import 'swiper/css';
 
 function Home() {
   return (
     <div className="p-4">
-      <header className="flex justify-between mb-5">
+      <header className="flex items-center justify-between mb-5">
         <h2>Olá, Camila!</h2>
         <button>
           <Image src={menuIcon} alt="" />
@@ -21,14 +26,20 @@ function Home() {
       </header>
 
       <Swiper
-        pagination={true}
         autoplay={{ delay: 4000, disableOnInteraction: false }}
-        modules={[Pagination, Autoplay]}
-        className="h-40 rounded-lg"
+        modules={[Autoplay]}
+        slidesPerView={1}
+        className="rounded-lg h-42"
       >
-        <SwiperSlide className="bg-red-800 rounded-lg"></SwiperSlide>
-        <SwiperSlide className="bg-green-800 rounded-lg"></SwiperSlide>
-        <SwiperSlide className="rounded-lg bg-sky-800"></SwiperSlide>
+        <SwiperSlide className="rounded-lg ">
+          <Image src={firstBanner} alt="" />
+        </SwiperSlide>
+        <SwiperSlide className="rounded-lg ">
+          <Image src={secondBanner} alt="" />
+        </SwiperSlide>
+        <SwiperSlide className="rounded-lg ">
+          <Image src={thirdBanner} alt="" />
+        </SwiperSlide>
       </Swiper>
 
       <div className="mt-5">
