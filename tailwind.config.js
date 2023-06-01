@@ -19,6 +19,9 @@ module.exports = {
       textColor: {
         'custom-blue': '#54C1E9',
       },
+      stroke: {
+        'custom-blue': '#54C1E9',
+      },
     },
   },
   plugins: [],
