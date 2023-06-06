@@ -2,11 +2,6 @@
 import LoginForm from '@/components/LoginForm';
 import Link from 'next/link';
 
-// Mock API
-import buildServer from '@/server/mirage';
-
-buildServer();
-
 function LoginPage() {
   return (
     <div className="min-h-screen flex items-center p=4">
