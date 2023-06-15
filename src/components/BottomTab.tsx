@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import homeIcon from '../assets/svg/home.svg';
-import petsIcon from '../assets/svg/pets.svg';
-import tutorIcon from '../assets/svg/tutor.svg';
-import activeHomeIcon from '../assets/svg/home-active.svg';
-import activePetsIcon from '../assets/svg/pets-active.svg';
-import activeTutorIcon from '../assets/svg/tutor-active.svg';
+import homeIcon from '../../public/images/home.svg';
+import petsIcon from '../../public/images/pets.svg';
+import tutorIcon from '../../public/images/tutor.svg';
+import activeHomeIcon from '../../public/images/home-active.svg';
+import activePetsIcon from '../../public/images/pets-active.svg';
+import activeTutorIcon from '../../public/images/tutor-active.svg';
 
 function BottomTab() {
   const { pathname, push } = useRouter();

@@ -1,14 +1,14 @@
 import Image from 'next/image';
-//Images
 import BottomTab from '@/components/BottomTab';
-import firstBanner from '../assets/png/banner-1.png';
-import secondBanner from '../assets/png/banner-2.png';
-import thirdBanner from '../assets/png/banner-3.png';
-import menuIcon from '../assets/svg/menu-burger.svg';
-import calendarIcon from '../assets/svg/calendar.svg';
-import searchIcon from '../assets/svg/search.svg';
-import vaccineIcon from '../assets/svg/vaccine.svg';
-import medicalDropIcon from '../assets/svg/medical-drops.svg';
+//Images
+import firstBanner from '../../public/images/banner-1.png';
+import secondBanner from '../../public/images/banner-2.png';
+import thirdBanner from '../../public/images/banner-3.png';
+import menuIcon from '../../public/images/menu-burger.svg';
+import calendarIcon from '../../public/images/calendar.svg';
+import searchIcon from '../../public/images/search.svg';
+import vaccineIcon from '../../public/images/vaccine.svg';
+import medicalDropIcon from '../../public/images/medical-drops.svg';
 //Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
