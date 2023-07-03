@@ -9,7 +9,20 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'custom-purple': '#9A0963',
+        'custom-blue': '#8093F1',
+        'custom-cyan': '#AFD9DB',
+        'custom-pink': '#FFB8EB',
+      },
+      textColor: {
+        'custom-blue': '#54C1E9',
+      },
+      stroke: {
+        'custom-blue': '#54C1E9',
+      },
+    },
   },
   plugins: [],
 };
