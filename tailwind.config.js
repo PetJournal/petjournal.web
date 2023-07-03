@@ -11,6 +11,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
+
         'custom-purple' : '#9A0963',
         'custom-purple-hover': '#6E0046',
       },
@@ -25,7 +26,14 @@ module.exports = {
       ringColor: {
         'custom-purple' : '#9A0963',
         'custom-purple-hover': '#6E0046',
-      }
+      }, 
+      textColor: {
+        'custom-blue': '#54C1E9',
+      },
+      stroke: {
+        'custom-blue': '#54C1E9',
+      },
+
     },
   },
   plugins: [],
