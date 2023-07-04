@@ -11,7 +11,9 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
-
+        'custom-blue': '#8093F1',
+        'custom-cyan': '#AFD9DB',
+        'custom-pink': '#FFB8EB',
         'custom-purple' : '#9A0963',
         'custom-purple-hover': '#6E0046',
       },
