@@ -1,17 +1,21 @@
 type SpeciesCardProps = {
   species: string;
+  selectedSpecies: string;
   setSelectedSpecies: React.Dispatch<React.SetStateAction<string>>;
   setIsInputActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function SpeciesCard({
   species,
+  selectedSpecies,
   setSelectedSpecies,
   setIsInputActive,
 }: SpeciesCardProps) {
   return (
     <div
-      className="flex justify-center items-center flex-col w-[100px] h-[100px] border-2 border-[#B2B2B2] rounded-lg"
+      className={`flex justify-center items-center flex-col w-[100px] h-[100px] border-2 ${
+        selectedSpecies === species ? 'border-[#7C54A7]' : 'border-[#B2B2B2]'
+      } rounded-lg`}
       onClick={() => {
         setIsInputActive(false);
         setSelectedSpecies(species);

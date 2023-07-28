@@ -36,6 +36,7 @@ function Species() {
             <SpeciesCard
               key={species}
               species={species}
+              selectedSpecies={selectedSpecies}
               setSelectedSpecies={setSelectedSpecies}
               setIsInputActive={setIsInputActive}
             />
