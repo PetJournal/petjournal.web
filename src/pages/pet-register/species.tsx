@@ -111,7 +111,7 @@ function Species() {
           </Link>
           <button
             disabled={isContinueDisabled}
-            className="bg-primary-400 text-gray-100 text-base font-medium rounded-3xl w-40 py-2 disabled:text-gray-300 disabled:border-2 disabled:border-gray-300 disabled:bg-transparent"
+            className="bg-primary-400 text-gray-100 text-base font-medium rounded-3xl w-40 py-2 disabled:text-gray-300 disabled:border-2 disabled:border-gray-300 disabled:bg-transparent disabled:cursor-not-allowed"
           >
             Continuar
           </button>
