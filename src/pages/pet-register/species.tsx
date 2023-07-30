@@ -27,6 +27,10 @@ function Species() {
     setIsContinueDisabled(selectedSpecies === '');
   }, [selectedSpecies]);
 
+  useEffect(() => {
+    setIsContinueDisabled(!validateSpecies(selectedSpecies));
+  }, [selectedSpecies]);
+
   const SpeciesList = [
     'Cachorro',
     'Pássaro',
@@ -35,6 +39,11 @@ function Species() {
     'Réptil',
     'Roedor',
   ];
+
+  function validateSpecies(value: string) {
+    const validationResult = speciesValidationSchema.safeParse(value);
+    return validationResult.success;
+  }
 
   return (
     <div className={`${fredoka.variable} font-sans h-screen`}>
