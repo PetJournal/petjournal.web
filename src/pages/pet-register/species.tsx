@@ -28,13 +28,13 @@ function Species() {
   ];
 
   return (
-    <div className={`${fredoka.variable} font-sans`}>
+    <div className={`${fredoka.variable} font-sans h-screen`}>
       <header className="flex items-center justify-center h-14 font-normal text-base shadow-[0_2px_4px_0_rgba(0,0,0,0.06)] mb-9">
-        <h1 className="text-primary-400">Cadastro Pet</h1>
+        <h1 className="text-primary-400 font-normal text-base">Cadastro Pet</h1>
       </header>
       <main className="max-w-sm mx-auto flex flex-col items-center">
-        <h2 className="text-primary-400 text-center text-[22px] leading-6 px-2">
-          Olá <span className="text-primary-300">Fulano</span>, gostaríamos de
+        <h2 className="text-primary-400 text-center text-[22px] leading-6 px-2 font-medium">
+          Olá, <span className="text-primary-300">Fulano</span>, gostaríamos de
           saber qual a espécie do seu Pet:
         </h2>
 
@@ -51,7 +51,7 @@ function Species() {
         </div>
 
         <button
-          className="bg-link-400 w-[200px] py-2 rounded-3xl mt-5 text-gray-100 hover:bg-link-300 focus:bg-link-300 transition-colors"
+          className="bg-link-400 w-[200px] py-2 rounded-3xl mt-5 text-gray-100 text-base font-medium transition-colors hover:bg-link-300 focus:bg-link-300"
           onClick={() => {
             setIsInputActive(!isInputActive);
             setSelectedSpecies('');
@@ -61,10 +61,10 @@ function Species() {
         </button>
 
         {isInputActive && (
-          <div className="mt-10">
+          <div className="mt-10 w-full">
             <label
               htmlFor="species"
-              className="self-start ml-3 text-primary-400"
+              className="self-start ml-3 text-primary-400 text-sm font-normal"
             >
               Insira a espécie:
             </label>
@@ -72,7 +72,7 @@ function Species() {
               type="text"
               name="species"
               placeholder="Digite aqui..."
-              className="border-2 border-gray-300 rounded-lg px-3 py-2 w-full outline-none"
+              className="border-2 border-gray-300 text-gray-300 text-sm font-normal rounded-lg px-3 py-2 w-full outline-none"
               value={selectedSpecies}
               onChange={(e) => setSelectedSpecies(e.target.value)}
             />
@@ -82,13 +82,13 @@ function Species() {
         <div className="absolute bottom-8 flex gap-4">
           <Link
             href="/pet-register"
-            className="text-primary-400 border-2 border-primary-400 rounded-3xl w-40 py-2 text-center"
+            className="text-primary-400 border-2 border-primary-400 text-base font-medium rounded-3xl w-40 py-2 text-center"
           >
             Voltar
           </Link>
           <button
             disabled={isContinueDisabled}
-            className="bg-primary-400 text-gray-100 rounded-3xl w-40 py-2 disabled:text-gray-300 disabled:border-2 disabled:border-gray-300 disabled:bg-transparent"
+            className="bg-primary-400 text-gray-100 text-base font-medium rounded-3xl w-40 py-2 disabled:text-gray-300 disabled:border-2 disabled:border-gray-300 disabled:bg-transparent"
           >
             Continuar
           </button>

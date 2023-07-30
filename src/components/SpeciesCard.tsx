@@ -14,7 +14,7 @@ function SpeciesCard({
   return (
     <div
       className={`flex justify-center items-center flex-col w-[100px] h-[100px] border-2 ${
-        selectedSpecies === species ? 'border-[#7C54A7]' : 'border-[#B2B2B2]'
+        selectedSpecies === species ? 'border-[#7C54A7]' : 'border-gray-300'
       } rounded-lg`}
       onClick={() => {
         setIsInputActive(false);
@@ -28,7 +28,7 @@ function SpeciesCard({
           .replace(/[\u0300-\u036f]/g, '')}.svg`}
         alt={species}
       />
-      <p>{species}</p>
+      <p className="font-semibold text-sm text-gray-300">{species}</p>
     </div>
   );
 }
