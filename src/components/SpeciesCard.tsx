@@ -14,7 +14,7 @@ function SpeciesCard({
   return (
     <div
       className={`flex justify-center items-center flex-col w-[100px] h-[100px] border-2 ${
-        selectedSpecies === species ? 'border-[#7C54A7]' : 'border-gray-300'
+        selectedSpecies === species ? 'border-primary-400' : 'border-gray-300'
       } rounded-lg`}
       onClick={() => {
         setIsInputActive(false);
