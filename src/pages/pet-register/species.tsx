@@ -2,6 +2,15 @@ import SpeciesCard from '@/components/SpeciesCard';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Fredoka } from '@next/font/google';
+import z from 'zod';
+
+const speciesValidationSchema = z
+  .string()
+  .min(4, 'Por favor, insira pelo menos 3 caracteres no campo digitado.')
+  .regex(
+    /^[a-zA-Z\s]+$/,
+    "Não é possível utilizar números e caracteres especiais, como '@', '#', '$', '%' e '&' em seu nome.",
+  );
 
 const fredoka = Fredoka({
   subsets: ['latin'],
@@ -74,8 +83,22 @@ function Species() {
               placeholder="Digite aqui..."
               className="border-2 border-gray-300 text-gray-300 text-sm font-normal rounded-lg px-3 py-2 w-full outline-none"
               value={selectedSpecies}
-              onChange={(e) => setSelectedSpecies(e.target.value)}
+              onChange={(e) => {
+                setSelectedSpecies(e.target.value);
+              }}
             />
+            {speciesValidationSchema.safeParse(selectedSpecies).success ||
+            selectedSpecies == '' ? null : (
+              <>
+                <p className="text-error-400 text-xs font-normal mt-1 ml-3">
+                  Por favor, insira pelo menos 3 caracteres no campo digitado.
+                </p>
+                <p className="text-error-400 text-xs font-normal ml-3">
+                  Não é possível utilizar números e caracteres especiais, como
+                  '@', '#', '$', '%' e '&' em seu nome.
+                </p>
+              </>
+            )}
           </div>
         )}
 
