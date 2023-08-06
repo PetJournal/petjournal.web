@@ -1,91 +1,75 @@
-// Hooks
-import { FormEvent, useState } from 'react';
-import useInput from '@/hooks/useInput';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-
-// Components
 import Link from 'next/link';
 
-function validateEmailOrPhone(value: string): string | undefined {
-  if (!value) {
-    return 'Este campo é obrigatório!';
-  }
+const loginFormSchema = z.object({
+  emailOuTelefone: z
+    .string()
+    .nonempty('Este campo é obrigatório!')
+    .regex(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$|^\(?(?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$/,
+      'Por favor, digite um e-mail ou celular válido.'
+    ),
+  senha: z.string().nonempty('Este campo é obrigatório!').min(8, 'A senha deve ter pelo menos 8 caracteres'),
+});
 
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-
-  const phoneRegex =
-    /^\(?(?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$/;
-
-  if (!emailRegex.test(value)) {
-    if (!phoneRegex.test(value)) {
-      return 'Por favor, digite um e-mail ou celular válido.';
-    }
-  }
-
-  return undefined;
-}
-
-function validatePassword(value: string): string | undefined {
-  if (!value) {
-    return 'Este campo é obrigatório!';
-  }
-
-  if (value.length < 8) {
-    return 'A senha deve ter pelo menos 8 caracteres';
-  }
-
-  return undefined;
-}
+type LoginFormValues = {
+  emailOuTelefone: string;
+  senha: string;
+};
 
 function LoginForm() {
-  const emailOrPhoneProps = useInput({ validate: validateEmailOrPhone });
-  const passwordProps = useInput({ validate: validatePassword });
-  const [rememberMe, setRememberMe] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [submissionError, setSubmissionError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    mode: 'onChange', 
+  });
+
+  const [lembrar, setLembrar] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [carregando, setCarregando] = useState(false);
+  const [erroEnvio, setErroEnvio] = useState('');
   const { push } = useRouter();
 
-  const isButtonDisabled = !(
-    !!emailOrPhoneProps.value &&
-    !!passwordProps.value &&
-    !emailOrPhoneProps.error &&
-    !passwordProps.error
-  );
+  const isButtonDisabled = !!errors.emailOuTelefone || !!errors.senha || carregando;
 
-  function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setLoading(true);
+  function handleFormSubmit(data: LoginFormValues) {
+    setCarregando(true);
 
     fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify({
-        email: emailOrPhoneProps.value,
-        password: passwordProps.value,
+        email: data.emailOuTelefone,
+        senha: data.senha,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setLoading(false);
+        setCarregando(false);
 
         if (data.error) {
-          setSubmissionError(data.error);
+          setErroEnvio(data.error);
           return;
         }
 
-        push('/profile');
+        push('/perfil');
       })
       .catch(() => {
-        setLoading(false);
-        setSubmissionError('Algo deu errado. Tente novamente, por favor.');
+        setCarregando(false);
+        setErroEnvio('Algo deu errado. Tente novamente, por favor.');
       });
   }
 
   return (
     <form
       className="flex flex-col gap-y-4"
-      onSubmit={(event) => handleFormSubmit(event)}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <label>
         <span className="mb-1 block">Login</span>
@@ -93,13 +77,13 @@ function LoginForm() {
           <div className="border border-neutral-300 py-1 px-2">
             <input
               type="text"
-              {...emailOrPhoneProps}
+              {...register('emailOuTelefone')}
               className="w-full outline-0"
             />
           </div>
-          {emailOrPhoneProps.error && (
+          {errors.emailOuTelefone && (
             <span className="text-red-600 text-xs">
-              {emailOrPhoneProps.error}
+              {errors.emailOuTelefone.message}
             </span>
           )}
         </div>
@@ -109,19 +93,19 @@ function LoginForm() {
         <div>
           <div className="border border-neutral-300 flex py-1 px-2">
             <input
-              type={showPassword ? 'text' : 'password'}
-              {...passwordProps}
+              type={mostrarSenha ? 'text' : 'password'}
+              {...register('senha')}
               className="w-full outline-0"
             />
             <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
+              onClick={() => setMostrarSenha((prev) => !prev)}
             >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
+              {mostrarSenha ? 'Ocultar' : 'Mostrar'}
             </button>
           </div>
-          {passwordProps.error && (
-            <span className="text-red-600 text-xs">{passwordProps.error}</span>
+          {errors.senha && (
+            <span className="text-red-600 text-xs">{errors.senha.message}</span>
           )}
         </div>
       </label>
@@ -130,8 +114,8 @@ function LoginForm() {
           <input
             className="mr-1"
             type="checkbox"
-            checked={rememberMe}
-            onChange={(event) => setRememberMe(event.target.checked)}
+            checked={lembrar}
+            onChange={(event) => setLembrar(event.target.checked)}
           />
           <span>Lembrar</span>
         </label>
@@ -139,9 +123,9 @@ function LoginForm() {
           Esqueci minha senha
         </Link>
       </div>
-      {submissionError && (
+      {erroEnvio && (
         <span className="text-center text-xs text-red-600">
-          {submissionError}
+          {erroEnvio}
         </span>
       )}
       <button
@@ -151,7 +135,7 @@ function LoginForm() {
         type="submit"
         disabled={isButtonDisabled}
       >
-        {loading ? 'Enviando...' : 'Continuar'}
+        {carregando ? 'Enviando...' : 'Continuar'}
       </button>
     </form>
   );
