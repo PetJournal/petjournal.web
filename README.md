@@ -2,7 +2,7 @@
 
 Aplicação web que te ajuda a cuidar do seu PET
 
-<div style="display: flex;">
+<div>
   <img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
   <img src="https://img.shields.io/badge/TypeScript-F7DF1E?style=for-the-badge&logo=typescript&logoColor=black">
   <img src="https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white">
@@ -21,7 +21,7 @@ git clone https://github.com/PetJournal/petjournal.web.git
 2. Instale as dependências do projeto com o comando:
 
 ```bash
-npm install
+yarn
 ```
 
 3. Acesse a branch de desenvolvimento com o comando:
@@ -33,7 +33,7 @@ git checkout develop
 4. Rode a aplicação com o comando:
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 5. Acesse as rotas disponíveis seguindo a estrutura `localhost:3000/<rota>`
