@@ -4,21 +4,22 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import axios from 'axios';
 
 const loginFormSchema = z.object({
-  emailOuTelefone: z
+  email: z
+    .string()
+    .email('Digite um email válido')
+    .nonempty('Este campo é obrigatório!'),
+  password: z
     .string()
     .nonempty('Este campo é obrigatório!')
-    .regex(
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$|^\(?(?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$/,
-      'Por favor, digite um e-mail ou celular válido.'
-    ),
-  senha: z.string().nonempty('Este campo é obrigatório!').min(8, 'A senha deve ter pelo menos 8 caracteres'),
+    .min(8, 'A senha deve ter pelo menos 8 caracteres'),
 });
 
 type LoginFormValues = {
-  emailOuTelefone: string;
-  senha: string;
+  email: string;
+  password: string;
 };
 
 function LoginForm() {
@@ -28,40 +29,35 @@ function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
-    mode: 'onChange', 
+    mode: 'onChange',
   });
 
-  const [lembrar, setLembrar] = useState(false);
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [carregando, setCarregando] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [erroEnvio, setErroEnvio] = useState('');
   const { push } = useRouter();
 
-  const isButtonDisabled = !!errors.emailOuTelefone || !!errors.senha || carregando;
+  const isButtonDisabled = !!errors.email || !!errors.password || loading;
 
   function handleFormSubmit(data: LoginFormValues) {
-    setCarregando(true);
+    setLoading(true);
 
-    fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: data.emailOuTelefone,
-        senha: data.senha,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCarregando(false);
-
-        if (data.error) {
-          setErroEnvio(data.error);
-          return;
-        }
-
-        push('/perfil');
+    axios
+      .post('https://petjournal-api.onrender.com/api/login', {
+        email: data.email,
+        password: data.password,
       })
-      .catch(() => {
-        setCarregando(false);
+      .then((response) => {
+        console.log(response);
+        setLoading(false);
+        push('/');
+      })
+      .catch((err) => {
+        if (axios.isAxiosError(err)) {
+          console.log(err.response?.data);
+        }
+        setLoading(false);
         setErroEnvio('Algo deu errado. Tente novamente, por favor.');
       });
   }
@@ -77,14 +73,12 @@ function LoginForm() {
           <div className="border border-neutral-300 py-1 px-2">
             <input
               type="text"
-              {...register('emailOuTelefone')}
+              {...register('email')}
               className="w-full outline-0"
             />
           </div>
-          {errors.emailOuTelefone && (
-            <span className="text-red-600 text-xs">
-              {errors.emailOuTelefone.message}
-            </span>
+          {errors.email && (
+            <span className="text-red-600 text-xs">{errors.email.message}</span>
           )}
         </div>
       </label>
@@ -93,19 +87,21 @@ function LoginForm() {
         <div>
           <div className="border border-neutral-300 flex py-1 px-2">
             <input
-              type={mostrarSenha ? 'text' : 'password'}
-              {...register('senha')}
+              type={showPassword ? 'text' : 'password'}
+              {...register('password')}
               className="w-full outline-0"
             />
             <button
               type="button"
-              onClick={() => setMostrarSenha((prev) => !prev)}
+              onClick={() => setShowPassword((prev) => !prev)}
             >
-              {mostrarSenha ? 'Ocultar' : 'Mostrar'}
+              {showPassword ? 'Ocultar' : 'Mostrar'}
             </button>
           </div>
-          {errors.senha && (
-            <span className="text-red-600 text-xs">{errors.senha.message}</span>
+          {errors.password && (
+            <span className="text-red-600 text-xs">
+              {errors.password.message}
+            </span>
           )}
         </div>
       </label>
@@ -114,8 +110,8 @@ function LoginForm() {
           <input
             className="mr-1"
             type="checkbox"
-            checked={lembrar}
-            onChange={(event) => setLembrar(event.target.checked)}
+            checked={remember}
+            onChange={(event) => setRemember(event.target.checked)}
           />
           <span>Lembrar</span>
         </label>
@@ -124,9 +120,7 @@ function LoginForm() {
         </Link>
       </div>
       {erroEnvio && (
-        <span className="text-center text-xs text-red-600">
-          {erroEnvio}
-        </span>
+        <span className="text-center text-xs text-red-600">{erroEnvio}</span>
       )}
       <button
         className={`text-center py-2 px-4 bg-neutral-200 ${
@@ -135,7 +129,7 @@ function LoginForm() {
         type="submit"
         disabled={isButtonDisabled}
       >
-        {carregando ? 'Enviando...' : 'Continuar'}
+        {loading ? 'Enviando...' : 'Continuar'}
       </button>
     </form>
   );
