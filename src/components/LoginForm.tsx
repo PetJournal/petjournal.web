@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import axios from '../pages/api/axios';
 import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 
 const loginFormSchema = z.object({
   email: z
@@ -50,8 +51,14 @@ function LoginForm() {
         password: data.password,
       })
       .then((response) => {
-        console.log(response);
         setLoading(false);
+
+        Cookies.set('accessToken', response.data.accessToken, {
+          expires: 7,
+          path: '/',
+          secure: true,
+        });
+
         push('/');
       })
       .catch((err) => {
