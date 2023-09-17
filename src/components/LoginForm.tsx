@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import axios from 'axios';
+import axios from '../pages/api/axios';
+import { AxiosError } from 'axios';
 
 const loginFormSchema = z.object({
   email: z
@@ -44,7 +45,7 @@ function LoginForm() {
     setLoading(true);
 
     axios
-      .post('https://petjournal-api.onrender.com/api/login', {
+      .post('/login', {
         email: data.email,
         password: data.password,
       })
@@ -54,8 +55,9 @@ function LoginForm() {
         push('/');
       })
       .catch((err) => {
-        if (axios.isAxiosError(err)) {
-          console.log(err.response?.data);
+        if (err.isAxiosError) {
+          const axiosError = err as AxiosError;
+          console.log(axiosError.response?.data);
         }
         setLoading(false);
         setErroEnvio('Algo deu errado. Tente novamente, por favor.');
