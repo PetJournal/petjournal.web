@@ -7,6 +7,8 @@ import Link from 'next/link';
 import axios from '../pages/api/axios';
 import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
+import toggleShowPassword from '/public/images/show-password.svg';
 
 const loginFormSchema = z.object({
   email: z
@@ -77,52 +79,57 @@ function LoginForm() {
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <label>
-        <span className="mb-1 block">Login</span>
-        <div>
-          <div className="border border-neutral-300 py-1 px-2">
-            <input
-              type="text"
-              {...register('email')}
-              className="w-full outline-0"
-            />
-          </div>
-          {errors.email && (
-            <span className="text-red-600 text-xs">{errors.email.message}</span>
-          )}
+        <div className="text-custom-purple text-sm font-medium">Login</div>
+        <div className="border border-[#1b1b1b] rounded-[5px] py-2 px-1">
+          <input
+            type="text"
+            {...register('email')}
+            className="w-full outline-0 text-[#292929] font-medium placeholder:text-[#BFBFBF]"
+            placeholder="E-mail"
+          />
         </div>
+        {errors.email && (
+          <span className="text-red-600 text-xs">{errors.email.message}</span>
+        )}
       </label>
       <label>
-        <span className="mb-1 block">Senha</span>
-        <div>
-          <div className="border border-neutral-300 flex py-1 px-2">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              {...register('password')}
-              className="w-full outline-0"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
-          </div>
-          {errors.password && (
-            <span className="text-red-600 text-xs">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-      </label>
-      <div className="flex justify-between gap-x-2">
-        <label>
+        <div className="text-custom-purple text-sm font-medium">Senha</div>
+        <div className="border border-[#1b1b1b] rounded-[5px] flex py-2 px-1">
           <input
-            className="mr-1"
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            className="w-full outline-0 text-[#292929] font-medium placeholder:text-[#BFBFBF]"
+            placeholder="Senha"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="px-1"
+          >
+            <Image
+              src={toggleShowPassword}
+              alt="Ícone de olho para mostrar e esconder a senha"
+            />
+          </button>
+        </div>
+        {errors.password && (
+          <span className="text-red-600 text-xs">
+            {errors.password.message}
+          </span>
+        )}
+      </label>
+      <div className="flex justify-between px-1">
+        <label className="flex items-center justify-center relative">
+          <input
+            className="appearance-none w-5 h-5 rounded-full border-2 border-custom-purple mr-1"
             type="checkbox"
             checked={remember}
             onChange={(event) => setRemember(event.target.checked)}
           />
           <span>Lembrar</span>
+          {remember && (
+            <div className="absolute w-2 h-2 bg-custom-purple rounded-full left-[0.375rem]"></div>
+          )}
         </label>
         <Link className="underline" href="#">
           Esqueci minha senha
@@ -132,8 +139,10 @@ function LoginForm() {
         <span className="text-center text-xs text-red-600">{erroEnvio}</span>
       )}
       <button
-        className={`text-center py-2 px-4 bg-neutral-200 ${
-          isButtonDisabled ? 'text-neutral-400' : 'text-neutral-900'
+        className={`flex self-center font-medium items-center justify-center  rounded-[45px] px-11 py-3 mt-16 ${
+          isButtonDisabled
+            ? 'bg-transparent border-2 border-[#B2B2B2] text-[#B2B2B2]'
+            : 'bg-custom-purple text-white'
         }`}
         type="submit"
         disabled={isButtonDisabled}
