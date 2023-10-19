@@ -14,8 +14,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import 'swiper/css/pagination';
 import 'swiper/css';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 function Home() {
+  const accessToken = Cookies.get('accessToken');
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !accessToken) {
+      push('/register');
+    }
+  }, [accessToken, push]);
+
   return (
     <div className="p-4">
       <header className="flex items-center justify-between mb-5">
