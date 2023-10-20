@@ -1,20 +1,8 @@
 "use client";
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-type Inputs = {
-  name: string,
-  lastName: string,
-  email: string,
-  telPhone: string,
-  password: string,
-  confirmPassword: string,
-};
-
-const nameRegex = /^[a-zA-Z]{3,}$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-const phoneRegex = /^\d{2}\d{9}$/;
+import { Inputs } from '@/@types/Inputs';
+import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '@/utils/Regex';
 
 
 export default function screenRegister() {
@@ -22,8 +10,9 @@ export default function screenRegister() {
     register,
     handleSubmit,
     watch,
-    formState: { errors } } = useForm<Inputs>();
-
+    formState: { errors }
+  } = useForm<Inputs>();
+  
   const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
   const handleAgreeToTerms = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHasAgreedToTerms(event.target.checked);
@@ -235,4 +224,3 @@ export default function screenRegister() {
     </>
   )
 }
-
