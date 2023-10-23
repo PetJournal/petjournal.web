@@ -3,11 +3,13 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function recoveryCode() {
   const [inputValues, setInputValues] = useState(Array(6).fill(''));
   const [verificationStatus, setVerificationStatus] = useState<'valid' | 'invalid' | 'none'>('none');
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
+  const { push } = useRouter();
 
   function handleInputChange(index: number, value: string) {
     const newInputValues = [...inputValues]
@@ -33,6 +35,7 @@ function recoveryCode() {
   function handleSubmit() {
     if (validateCode(inputValues)) {
       setVerificationStatus('valid');
+      push('/change-password')
       //redirect to 'change password'
     } else {
       setVerificationStatus('invalid');
@@ -57,10 +60,10 @@ function recoveryCode() {
         <p className='mt-8 text-[15px]'>Insira no campo abaixo o código de verificação de 6</p>
         <p className='text-[15px]'>dígitos enviado para o seu email.</p>
         {verificationStatus === 'invalid' && (
-          <p className='text-red-600 mt-4'>O código de verificação que você inseriu não é válido. Verifique o código e tente novamente</p>
+          <p className='text-red-600 mt-5 text-sm font-medium'>O código de verificação que você inseriu não é válido. Verifique o código e tente novamente</p>
         )}
         <div className='flex flex-col'>
-          <div className='flex space-x-2 mt-2'>
+          <div className='flex space-x-2'>
             {Array(6)
               .fill(0)
               .map((_, index) => (
