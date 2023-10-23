@@ -1,5 +1,5 @@
 // Hooks
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import useInput from '@/hooks/useInput';
 import axios from '@/pages/api/axios';
 import { ZodError, z } from 'zod';
@@ -25,40 +25,33 @@ function ForgotPasswordForm() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(!isValid);
   const [submissionMsg, setSubmissionMsg] = useState('');
 
-  const emailProps = useInput({ validate: validateEmail });
-  const isButtonDisabled = !isValid;
-
-  function validateEmail(value: string): string | undefined {
-    try {
-      emailSchema.parse(value)
-      return undefined
-    } catch (err) {
-      if (err instanceof ZodError) {
-        return err.errors[0].message;
-      }
-      return 'Erro de validação de e-mail';
-    }
-  }
+  useEffect(() => {
+    setIsButtonDisabled(!isValid)
+    setSubmissionMsg('')
+  }, [isValid])
 
   const handleFormSubmit: SubmitHandler<FormData> = (data) => {
-    axios.post('/forget-password', {
-      email: emailProps.value,
-    })
+    setLoading(true)
+    setIsButtonDisabled(true)
+    axios.post('/forget-password', data)
       .then((response) => {
         setLoading(false);
+        setIsButtonDisabled(false)
         if (response.data.error) {
-          setSubmissionMsg(response.data.error);
+          setSubmissionMsg(response.data.error)
         } else {
-          setSubmissionMsg(response.data.message);
+          setSubmissionMsg(response.data.message)
         }
       })
       .catch((err) => {
         console.log(err)
         const error = err.response ? err.response.data.error : 'Erro ao processar a solicitação.';
-        setLoading(false);
-        setSubmissionMsg(error);
+        setLoading(false)
+        setIsButtonDisabled(false)
+        setSubmissionMsg(error)
       });
   }
 
