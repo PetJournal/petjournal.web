@@ -1,8 +1,10 @@
 "use client";
 import { useState } from 'react';
+import Image from 'next/image'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Inputs } from '@/@types/Inputs';
 import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '@/utils/Regex';
+import logo from '../../public/Logo.svg';
 
 
 export default function screenRegister() {
@@ -58,19 +60,30 @@ export default function screenRegister() {
 
   return (
     <>
-
-      <form className="flex flex-col items-center justify-center h-screen" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-5xl font-bold mr-96 mb-20">Pet Journal</h1>
-        <h1 className="text-5xl font-bold pl-24 mr-60 mb-10">Inscreva-se</h1>
+      <div className='flex items-center justify-center'>
+        <Image  src={logo} alt='Logo Pet Journal'/>
+      </div  >
+      <div className='flex items-center justify-center'>
+        <h1 className="font-fredoka text-2xl mb-10">Inscreva-se</h1>
+      </div>
+      
+      <form className="flex flex-col items-center justify-center h-screen" onSubmit=
+      {handleSubmit(onSubmit)}>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <input className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              type="text"
-              id="name"
-              {...register('name', { required: true, pattern: nameRegex })}
-              value={name}
-              onChange={handleName}
-              placeholder="Nome" />
+            <label htmlFor='name'>
+              Nome
+              <input
+                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                type="text"
+                id="name"
+                {...register('name', { required: true, pattern: nameRegex })}
+                value={name}
+                onChange={handleName}
+                placeholder="Digite seu primeiro nome"
+              />
+            </label>
+            
             {errors.name && errors.name.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
             )}
@@ -81,14 +94,17 @@ export default function screenRegister() {
 
 
           <div className="w-full md:w-1/2 px-3">
+            <label htmlFor='lastName'>
+              Sobrenome
             <input className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               type="text"
               id="lastName"
               {...register('lastName', { required: true, pattern: nameRegex })}
               value={lastName}
               onChange={handleLastName}
-              placeholder="Sobrenome"
+              placeholder="Digite seu sobrenome"
             />
+            </label>
             {errors.lastName && errors.lastName.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
             )}
@@ -101,15 +117,18 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 mb-6 w-96">
           <div className="w-full px-3">
-            <input
-              className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              type="email"
-              id="email"
-              {...register('email', { required: true, pattern: emailRegex })}
-              value={email}
-              onChange={handleEmail}
-              placeholder="E-mail"
-            />
+            <label htmlFor='email'>
+              E-mail
+              <input
+                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="email"
+                id="email"
+                {...register('email', { required: true, pattern: emailRegex })}
+                value={email}
+                onChange={handleEmail}
+                placeholder="E-mail"
+              />
+            </label>
             {errors.email && errors.email.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
             )}
@@ -122,18 +141,22 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 mb-6 w-96">
           <div className="w-full px-3">
-            <input
-              className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              type="tel"
-              id="telphone"
-              {...register('telPhone', {
-                required: true,
-                pattern: phoneRegex
-              })}
-              value={telPhone}
-              onChange={handleTelPhone}
-              placeholder="Telefone"
-            />
+            <label htmlFor='telphone'>
+              Telefone
+              <input
+                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="tel"
+                id="telphone"
+                {...register('telPhone', {
+                  required: true,
+                  pattern: phoneRegex
+                })}
+                value={telPhone}
+                onChange={handleTelPhone}
+                placeholder="Telefone"
+              />
+            </label>
+            
             {errors.telPhone && errors.telPhone.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
             )}
@@ -146,16 +169,19 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 mb-6 w-96">
           <div className="w-full px-3">
-            <input
-              className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              type="password"
-              id="password"
-              {...register('password', {
-                required: true,
-                pattern: passwordRegex,
-              })}
-              placeholder="Senha"
-            />
+            <label htmlFor='password'>
+              Senha
+              <input
+                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="password"
+                id="password"
+                {...register('password', {
+                  required: true,
+                  pattern: passwordRegex,
+                })}
+                placeholder="Senha"
+              />
+            </label>
             {errors.password && errors.password.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
             )}
@@ -168,19 +194,23 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 mb-6 w-96">
           <div className="w-full px-3">
-            <input
-              className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              type="password"
-              id="confirm-password"
-              {...register("confirmPassword", {
-                required: true,
-                pattern: passwordRegex,
-                validate: (value) => value === watchedPassword || 'As senhas devem ser idênticas',
-              })}
-              value={passwordConfirmation}
-              onChange={handlePasswordConfirmation}
-              placeholder="Confirmar Senha"
-            />
+            <label htmlFor='confirm-password'>
+              Confirmar Senha
+              <input
+                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="password"
+                id="confirm-password"
+                {...register("confirmPassword", {
+                  required: true,
+                  pattern: passwordRegex,
+                  validate: (value) => value === watchedPassword || 'As senhas devem ser idênticas',
+                })}
+                value={passwordConfirmation}
+                onChange={handlePasswordConfirmation}
+                placeholder="Confirmar Senha"
+              />
+            </label>
+            
             {errors.confirmPassword && errors.confirmPassword.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
             )}
