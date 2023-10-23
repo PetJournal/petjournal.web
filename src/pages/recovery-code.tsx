@@ -2,6 +2,7 @@ import petJournalLogo from '../assets/svg/petJournalIcon.svg'
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 function recoveryCode() {
   const [inputValues, setInputValues] = useState(Array(6).fill(''));
@@ -55,40 +56,46 @@ function recoveryCode() {
         </div>
         <p className='mt-8 text-[15px]'>Insira no campo abaixo o código de verificação de 6</p>
         <p className='text-[15px]'>dígitos enviado para o seu email.</p>
-          {verificationStatus === 'invalid' && (
-            <p className='text-red-600 mt-4'>O código de verificação que você inseriu não é válido. Verifique o código e tente novamente</p>
-          )}
-        <div className='flex space-x-2 mt-2'>
-          {Array(6)
-            .fill(0)
-            .map((_, index) => (
-              <input
-                key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
-                type='text'
-                maxLength={1}
-                pattern='\d*'
-                value={inputValues[index]}
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                onKeyPress={(e) => {
-                  if (!/\d/.test(e.key)) {
-                    e.preventDefault();
-                  }
-                }}
-                className={clsx(
-                  'w-12 h-16 text-center border-2 rounded-md mt-8',
-                  inputValues[index]
-                    ? 'border-custom-purple focus:ring-4 focus:ring-custom-purple focus:border-transparent focus:outline-none'
-                    : 'border-gray-300 focus:ring-4 focus:ring-custom-purple focus:border-transparent focus:outline-none'
-                )}
-              />
-            ))}
+        {verificationStatus === 'invalid' && (
+          <p className='text-red-600 mt-4'>O código de verificação que você inseriu não é válido. Verifique o código e tente novamente</p>
+        )}
+        <div className='flex flex-col'>
+          <div className='flex space-x-2 mt-2'>
+            {Array(6)
+              .fill(0)
+              .map((_, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  type='text'
+                  maxLength={1}
+                  pattern='\d*'
+                  value={inputValues[index]}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  onKeyPress={(e) => {
+                    if (!/\d/.test(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                  className={clsx(
+                    'w-12 h-16 text-center text-2xl font-bold border-2 rounded-md mt-8',
+                    inputValues[index]
+                      ? 'border-custom-purple focus:ring-4 focus:ring-custom-purple focus:border-transparent focus:outline-none'
+                      : 'border-[#AFD9DB] bg-gray-100 focus:ring-4 focus:ring-custom-purple focus:border-transparent focus:outline-none'
+                  )}
+                />
+              ))}
+          </div>
+          <Link href="/forgot-password" className="underline mt-2 text-sm flex justify-start">
+            Reenviar código?
+          </Link>
         </div>
+
         <button
           disabled={isButtonDisabled()}
           onClick={handleSubmit}
           className={clsx(
-            'mt-8 font-bold py-4 px-24 rounded-full',
+            'mt-8 font-bold w-36 h-12 rounded-[16px]',
             isButtonDisabled()
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-custom-purple hover:bg-custom-purple-hover text-white'
