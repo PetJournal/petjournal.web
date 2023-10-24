@@ -63,26 +63,27 @@ export default function screenRegister() {
       <div className='flex items-center justify-center'>
         <Image  src={logo} alt='Logo Pet Journal'/>
       </div  >
-      <div className='flex items-center justify-center'>
-        <h1 className="font-fredoka text-2xl mb-10">Inscreva-se</h1>
+      <div className='flex items-center justify-center mb-1 '>
+        <h1 className="font-fredoka font-medium text-2xl ">Inscreva-se</h1>
       </div>
       
-      <form className="flex flex-col items-center justify-center h-screen" onSubmit=
+      <form className="flex flex-col items-center justify-center h-screen -mt-19" onSubmit=
       {handleSubmit(onSubmit)}>
-        <div className="flex flex-wrap -mx-3 mb-6">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label htmlFor='name'>
-              Nome
-              <input
-                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                type="text"
-                id="name"
-                {...register('name', { required: true, pattern: nameRegex })}
-                value={name}
-                onChange={handleName}
-                placeholder="Digite seu primeiro nome"
-              />
-            </label>
+        <div  className="flex flex-wrap -mx-3 w-96 ">
+          <div className="w-full px-3">
+              <label htmlFor='name' className='font-fredoka text-sm font-medium text-wine'>
+                Nome
+                <input
+                  className="rounded appearance-none block w-full bg-white text-gray-700 border  border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"
+                  type="text"
+                  id="name"
+                  {...register('name', { required: true, pattern: nameRegex })}
+                  value={name}
+                  onChange={handleName}
+                  placeholder="Digite seu primeiro nome"
+                />
+              </label>
+          </div>
             
             {errors.name && errors.name.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
@@ -90,37 +91,36 @@ export default function screenRegister() {
             {errors.name && errors.name.type === 'pattern' && (
               <p className="text-red-500">Nome inválido</p>
             )}
-          </div>
-
-
-          <div className="w-full md:w-1/2 px-3">
-            <label htmlFor='lastName'>
-              Sobrenome
-            <input className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              type="text"
-              id="lastName"
-              {...register('lastName', { required: true, pattern: nameRegex })}
-              value={lastName}
-              onChange={handleLastName}
-              placeholder="Digite seu sobrenome"
-            />
-            </label>
-            {errors.lastName && errors.lastName.type === 'required' && (
-              <p className="text-red-500">Campo obrigatório</p>
-            )}
-            {errors.lastName && errors.lastName.type === 'pattern' && (
-              <p className="text-red-500">Sobrenome inválido</p>
-            )}
-          </div>
         </div>
-
-
-        <div className="flex flex-wrap -mx-3 mb-6 w-96">
-          <div className="w-full px-3">
-            <label htmlFor='email'>
+        
+          <div className="flex flex-wrap -mx-3 w-96">
+            <div className="w-full px-3">
+                
+              <label htmlFor='lastName' className='font-fredoka text-sm font-medium text-wine'>
+                Sobrenome
+              <input className="rounded appearance-none block w-full bg-white border-gray-border text-gray-700 border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"
+                type="text"
+                id="lastName"
+                {...register('lastName', { required: true, pattern: nameRegex })}
+                value={lastName}
+                onChange={handleLastName}
+                placeholder="Digite seu sobrenome"
+              />
+              </label>
+              {errors.lastName && errors.lastName.type === 'required' && (
+                <p className="text-red-500">Campo obrigatório</p>
+              )}
+              {errors.lastName && errors.lastName.type === 'pattern' && (
+                <p className="text-red-500">Sobrenome inválido</p>
+              )}
+            </div>
+        </div>
+        <div className="flex flex-wrap -mx-3 w-96">
+          <div className="w-full px-3" >
+            <label htmlFor='email' className='font-fredoka text-sm font-medium text-wine'>
               E-mail
               <input
-                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="email"
                 id="email"
                 {...register('email', { required: true, pattern: emailRegex })}
@@ -138,24 +138,25 @@ export default function screenRegister() {
           </div>
         </div>
 
-
-        <div className="flex flex-wrap -mx-3 mb-6 w-96">
+        <div className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3">
-            <label htmlFor='telphone'>
+          
+            <label htmlFor='telphone' className='font-fredoka text-sm font-medium text-wine'>
               Telefone
-              <input
-                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                type="tel"
-                id="telphone"
-                {...register('telPhone', {
-                  required: true,
-                  pattern: phoneRegex
-                })}
-                value={telPhone}
-                onChange={handleTelPhone}
-                placeholder="Telefone"
-              />
-            </label>
+                <input
+                  className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  type="tel"
+                  id="telphone"
+                  {...register('telPhone', {
+                    required: true,
+                    pattern: phoneRegex
+                  })}
+                  value={telPhone}
+                  onChange={handleTelPhone}
+                  placeholder="Telefone"
+                />
+              </label>
+          </div>
             
             {errors.telPhone && errors.telPhone.type === 'required' && (
               <p className="text-red-500">Campo obrigatório</p>
@@ -163,16 +164,16 @@ export default function screenRegister() {
             {errors.telPhone && errors.telPhone.type === 'pattern' && (
               <p className="text-red-500">Telefone Inválido (Segue o Padrão (DDD) 9XXXX-XXXX)</p>
             )}
-          </div>
+          
         </div>
 
 
-        <div className="flex flex-wrap -mx-3 mb-6 w-96">
+        <div className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3">
-            <label htmlFor='password'>
+            <label htmlFor='password' className='font-fredoka text-sm font-medium text-wine'>
               Senha
               <input
-                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="password"
                 id="password"
                 {...register('password', {
@@ -194,10 +195,10 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 mb-6 w-96">
           <div className="w-full px-3">
-            <label htmlFor='confirm-password'>
+            <label htmlFor='confirm-password' className='font-fredoka text-sm font-medium text-wine'>
               Confirmar Senha
               <input
-                className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="password"
                 id="confirm-password"
                 {...register("confirmPassword", {
@@ -241,7 +242,7 @@ export default function screenRegister() {
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
-            <button className="rounded-2xl appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <button className="rounded-2xl  appearance-none block w-full bg-wine text-white border border-gray-200 py-3 px-11 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-10 "
               disabled={!hasAgreedToTerms}
             >
               Continuar

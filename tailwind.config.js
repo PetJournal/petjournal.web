@@ -13,6 +13,10 @@ module.exports = {
       fontFamily: {
         'fredoka': ['Fredoka', 'sans-serif'],
       },
+      colors: {
+        'gray-border': 'rgba(122, 122, 122, 1)',
+        'wine': 'rgba(154, 9, 99, 1)'
+      }
     },
   },
   plugins: [],
