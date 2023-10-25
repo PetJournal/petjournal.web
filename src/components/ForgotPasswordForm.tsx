@@ -42,16 +42,22 @@ function ForgotPasswordForm() {
         const res = response ? response.data.message : 'Erro ao processar a solicitação.'
 
         if (res == "Email sent successfully") {
-          toast.success("E-mail enviado com sucesso.", {
+          toast.success("Sucesso. Redirecionando...", {
             position: "bottom-right",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,
             progress: undefined,
             theme: "light",
-          });
+          })
+          setTimeout(() => {
+            push({
+              pathname: '/recovery-code',
+              query: data
+            })
+          }, 3000)
         } else {
           toast.error(res, {
             position: "bottom-right",
@@ -62,7 +68,7 @@ function ForgotPasswordForm() {
             draggable: true,
             progress: undefined,
             theme: "light",
-          });
+          })
         }
 
         setLoading(false);
