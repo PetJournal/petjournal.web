@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function recoveryCode() {
   const [inputValues, setInputValues] = useState(Array(6).fill(''));
-  const [verificationStatus, setVerificationStatus] = useState<'valid' | 'invalid' | 'none'>('none');
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const inputRefs = useRef<HTMLInputElement[] | null[]>([]);
@@ -139,9 +138,6 @@ function recoveryCode() {
         </div>
         <p className='mt-8 text-[15px]'>Insira no campo abaixo o código de verificação de 6</p>
         <p className='text-[15px]'>dígitos enviado para o seu email.</p>
-        {verificationStatus === 'invalid' && (
-          <p className='text-red-600 mt-5 text-sm font-medium'>O código de verificação que você inseriu não é válido. Verifique o código e tente novamente</p>
-        )}
         <div className='flex flex-col'>
           <div className='flex space-x-2'>
             {Array(6)
