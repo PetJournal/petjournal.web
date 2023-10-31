@@ -5,6 +5,8 @@ import toggleShowPassword from '/public/images/show-password.svg';
 import toggleHidePassword from '/public/images/hide-password.svg';
 import Image from 'next/image';
 import axios from '@/pages/api/axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function ChangePasswordForm() {
@@ -14,14 +16,18 @@ function ChangePasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [accountAccess, setAccountAccess] = useState(false);
-  const { push } = useRouter();
+  const [loading, setLoading] = useState(false)
+  const { push, query } = useRouter();
+
+  const { accessToken } = query
 
   const isButtonDisabled = !(
     !!passwordProps.value &&
     !!confirmPasswordProps.value &&
     !passwordProps.error &&
     !confirmPasswordProps.error &&
-    !confirmPasswordError
+    !confirmPasswordError &&
+    !loading
   );
 
   const showPasswordMessage =
@@ -61,21 +67,71 @@ function ChangePasswordForm() {
   }
 
   function handleChangePassword(password: string, passwordConfirmation: string) {
+    const token = accessToken
+
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+
     return axios.patch('/guardian/change-password', {
       password, passwordConfirmation
+    }, {
+      headers
     })
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    setLoading(true)
     event.preventDefault();
     const response = await handleChangePassword(passwordProps.value, confirmPasswordProps.value)
+    setLoading(false)
     console.log(response)
+    const res = response ? response.data.message : 'Erro ao processar a solicitação.'
 
-    // push('/login');
+    if (res == "Password reset completed successfully") {
+      toast.success("Senha redefinida. Redirecionando...", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      setTimeout(() => {
+        push({
+          pathname: '/login'
+        })
+      }, 3000)
+    } else {
+      toast.error("Erro! Tente novamente mais tarde.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    }
   }
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="max-w-[375px]">
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className='flex flex-col gap-6'>
         <div>
           <label htmlFor="password" className='text-custom-purple font-medium text-sm'>

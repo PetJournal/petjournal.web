@@ -65,7 +65,7 @@ function recoveryCode() {
         setTimeout(() => {
           push({
             pathname: '/change-password',
-            query: response.data.accessToken
+            query: {accessToken: response.data.accessToken}
           })
         }, 3000)
       } else {
