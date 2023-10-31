@@ -28,7 +28,6 @@ function recoveryCode() {
     return code.every((value, index) => value === validCode[index]);
   }
 
-
   function handleSubmit() {
     if (validateCode(inputValues)) {
       setVerificationStatus('valid');

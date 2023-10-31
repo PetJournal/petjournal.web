@@ -4,6 +4,7 @@ import useInput from '@/hooks/useInput';
 import toggleShowPassword from '/public/images/show-password.svg';
 import toggleHidePassword from '/public/images/hide-password.svg';
 import Image from 'next/image';
+import axios from '@/pages/api/axios';
 
 
 function ChangePasswordForm() {
@@ -59,10 +60,18 @@ function ChangePasswordForm() {
     return undefined;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function handleChangePassword(password: string, passwordConfirmation: string) {
+    return axios.patch('/guardian/change-password', {
+      password, passwordConfirmation
+    })
+  }
 
-    push('/login');
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const response = await handleChangePassword(passwordProps.value, confirmPasswordProps.value)
+    console.log(response)
+
+    // push('/login');
   }
 
   return (
