@@ -115,7 +115,7 @@ function ForgotPasswordForm() {
 
   return (
     <form className="flex flex-col gap-y-4 mt-6" onSubmit={handleSubmit(handleFormSubmit)}>
-      <label>
+      <label className='flex flex-col gap-2'>
         <span className="mb-1 block text-custom-purple font-medium">Qual o seu e-mail de cadastro?</span>
         <div>
           <div className="flex h-[47px] items-center border border-[#7A7A7A] rounded-[5px] py-2 px-2">

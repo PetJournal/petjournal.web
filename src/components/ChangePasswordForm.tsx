@@ -134,10 +134,10 @@ function ChangePasswordForm() {
       />
       <div className='flex flex-col gap-6'>
         <div>
-          <label htmlFor="password" className='text-custom-purple font-medium text-sm'>
+          <label htmlFor="password" className='text-custom-purple font-medium text-sm' >
             Nova senha
           </label>
-          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md">
+          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md mt-2">
             <input
               type={showPassword ? 'text' : 'password'}
               {...passwordProps}
@@ -166,7 +166,7 @@ function ChangePasswordForm() {
           <label htmlFor="confirmPassword" className='text-custom-purple font-medium text-sm'>
             Confirmar senha
           </label>
-          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md">
+          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md mt-2">
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               {...confirmPasswordProps}
