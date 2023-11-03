@@ -15,7 +15,8 @@ module.exports = {
       },
       colors: {
         'gray-border': 'rgba(122, 122, 122, 1)',
-        'wine': 'rgba(154, 9, 99, 1)'
+        'wine': 'rgba(154, 9, 99, 1)',
+        'purple-pallet': '#F5F0FF'
       }
     },
   },

@@ -63,13 +63,13 @@ export default function screenRegister() {
       <div className='flex items-center justify-center'>
         <Image  src={logo} alt='Logo Pet Journal'/>
       </div  >
-      <div className='flex items-center justify-center mb-1 '>
-        <h1 className="font-fredoka font-medium text-2xl ">Inscreva-se</h1>
+      <div className='flex items-center justify-center mt-4'>
+        <h1 className="font-fredoka font-medium  text-2xl ">Inscreva-se</h1>
       </div>
       
-      <form className="flex flex-col items-center justify-center h-screen -mt-19" onSubmit=
+      <form className="flex flex-col items-center justify-center mt-12" onSubmit=
       {handleSubmit(onSubmit)}>
-        <div  className="flex flex-wrap -mx-3 w-96 ">
+        <div  className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3">
               <label htmlFor='name' className='font-fredoka text-sm font-medium text-wine'>
                 Nome
@@ -96,7 +96,7 @@ export default function screenRegister() {
           <div className="flex flex-wrap -mx-3 w-96">
             <div className="w-full px-3">
                 
-              <label htmlFor='lastName' className='font-fredoka text-sm font-medium text-wine'>
+              <label htmlFor='lastName' className='font-fredoka text-sm text-wine'>
                 Sobrenome
               <input className="rounded appearance-none block w-full bg-white border-gray-border text-gray-700 border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white"
                 type="text"
@@ -117,10 +117,10 @@ export default function screenRegister() {
         </div>
         <div className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3" >
-            <label htmlFor='email' className='font-fredoka text-sm font-medium text-wine'>
+            <label htmlFor='email' className='font-fredoka text-sm text-wine'>
               E-mail
               <input
-                className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
                 type="email"
                 id="email"
                 {...register('email', { required: true, pattern: emailRegex })}
@@ -141,7 +141,7 @@ export default function screenRegister() {
         <div className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3">
           
-            <label htmlFor='telphone' className='font-fredoka text-sm font-medium text-wine'>
+            <label htmlFor='telphone' className='font-fredoka text-sm  text-wine'>
               Telefone
                 <input
                   className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -170,7 +170,7 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3">
-            <label htmlFor='password' className='font-fredoka text-sm font-medium text-wine'>
+            <label htmlFor='password' className='font-fredoka text-sm  text-wine'>
               Senha
               <input
                 className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -195,7 +195,7 @@ export default function screenRegister() {
 
         <div className="flex flex-wrap -mx-3 mb-6 w-96">
           <div className="w-full px-3">
-            <label htmlFor='confirm-password' className='font-fredoka text-sm font-medium text-wine'>
+            <label htmlFor='confirm-password' className='font-fredoka text-sm  text-wine'>
               Confirmar Senha
               <input
                 className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -223,23 +223,22 @@ export default function screenRegister() {
             )}
           </div>
         </div>
-        <div className="flex justify-center">
-          <div>
+        <div className="flex justify-center ">
             <div className="flex justify-between gap-x-2">
-              <label>
                 <input
-                  className="mr-1"
-                  type="checkbox"
+                  className="w-4 color-wine"
                   checked={hasAgreedToTerms}
                   onChange={handleAgreeToTerms}
-
+                  type="radio"
+                  id='check'
                 />
-                <span>Eu concordo com a política de privacidade</span>
+              
+              <label htmlFor='check' className='font-fredoka text-sm'>
+                Eu concordo com a política de privacidade
               </label>
-
             </div>
-          </div>
         </div>
+        
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <button className="rounded-2xl  appearance-none block w-full bg-wine text-white border border-gray-200 py-3 px-11 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-10 "
