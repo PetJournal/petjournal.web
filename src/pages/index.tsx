@@ -16,22 +16,38 @@ import 'swiper/css/pagination';
 import 'swiper/css';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from './api/axios';
+
+type userDataType = {
+  firstName: String;
+  lastName: String;
+};
 
 function Home() {
   const accessToken = Cookies.get('accessToken');
+  const [userData, setUserData] = useState<userDataType>();
   const { push } = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !accessToken) {
       push('/register');
     }
+
+    axios
+      .get('/guardian/name', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((data) => setUserData(data.data))
+      .catch((err) => console.log(err));
   }, [accessToken, push]);
 
   return (
     <div className="p-4">
       <header className="flex items-center justify-between mb-5">
-        <h2>Olá, Camila!</h2>
+        <h2>Olá, {userData?.firstName}!</h2>
         <button>
           <Image src={menuIcon} alt="" />
         </button>
