@@ -1,10 +1,12 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Inputs } from '@/@types/Inputs';
 import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '@/utils/Regex';
 import logo from '../../public/Logo.svg';
+import axios from './api/axios';
+
 
 
 export default function screenRegister() {
@@ -29,34 +31,16 @@ export default function screenRegister() {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-
-  const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(event.target.value);
-  }
-
-  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  }
-
-  const handleTelPhone = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTelPhone(event.target.value);
-  };
-
-  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handlePasswordConfirmation = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirmation(event.target.value);
-  };
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
   }
+
+  useEffect(() => {
+    axios
+      .post('/signup')
+      .then((data) => console.log(data.data))
+      .catch((err) => console.log(err))
+  },[])
 
   return (
     <>
@@ -79,7 +63,7 @@ export default function screenRegister() {
                   id="name"
                   {...register('name', { required: true, pattern: nameRegex })}
                   value={name}
-                  onChange={handleName}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Digite seu primeiro nome"
                 />
               </label>
@@ -103,7 +87,7 @@ export default function screenRegister() {
                 id="lastName"
                 {...register('lastName', { required: true, pattern: nameRegex })}
                 value={lastName}
-                onChange={handleLastName}
+                onChange={(e) => setLastName(e.target.value)}
                 placeholder="Digite seu sobrenome"
               />
               </label>
@@ -125,7 +109,7 @@ export default function screenRegister() {
                 id="email"
                 {...register('email', { required: true, pattern: emailRegex })}
                 value={email}
-                onChange={handleEmail}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="E-mail"
               />
             </label>
@@ -152,7 +136,7 @@ export default function screenRegister() {
                     pattern: phoneRegex
                   })}
                   value={telPhone}
-                  onChange={handleTelPhone}
+                  onChange={(e) => setTelPhone(e.target.value)}
                   placeholder="Telefone"
                 />
               </label>
@@ -180,7 +164,9 @@ export default function screenRegister() {
                   required: true,
                   pattern: passwordRegex,
                 })}
+                value={password}
                 placeholder="Senha"
+                onChange={ (e) => setPassword(e.target.value)}
               />
             </label>
             {errors.password && errors.password.type === 'required' && (
@@ -207,7 +193,7 @@ export default function screenRegister() {
                   validate: (value) => value === watchedPassword || 'As senhas devem ser idênticas',
                 })}
                 value={passwordConfirmation}
-                onChange={handlePasswordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
                 placeholder="Confirmar Senha"
               />
             </label>
