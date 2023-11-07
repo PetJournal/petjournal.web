@@ -8,7 +8,6 @@ import logo from '../../public/Logo.svg';
 import axios from './api/axios';
 
 
-
 export default function screenRegister() {
   const {
     register,
@@ -17,10 +16,7 @@ export default function screenRegister() {
     formState: { errors }
   } = useForm<Inputs>();
   
-  const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
-  const handleAgreeToTerms = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHasAgreedToTerms(event.target.checked);
-  };
+  
 
   const watchedPassword = watch('password');
 
@@ -30,17 +26,29 @@ export default function screenRegister() {
   const [telPhone, setTelPhone] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
+
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-  }
 
-  useEffect(() => {
     axios
-      .post('/signup')
-      .then((data) => console.log(data.data))
-      .catch((err) => console.log(err))
-  },[])
+      .post('/signup',{
+        firstName: name,
+        lastName: lastName,
+        email: email,
+        phone: telPhone,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+        isPrivacyPolicyAccepted: hasAgreedToTerms
+      })
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      console.log(data);
+  }
 
   return (
     <>
@@ -214,7 +222,7 @@ export default function screenRegister() {
                 <input
                   className="w-4 color-wine"
                   checked={hasAgreedToTerms}
-                  onChange={handleAgreeToTerms}
+                  onChange={(e) => setHasAgreedToTerms(e.target.checked)} 
                   type="radio"
                   id='check'
                 />
@@ -227,8 +235,10 @@ export default function screenRegister() {
         
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
-            <button className="rounded-2xl  appearance-none block w-full bg-wine text-white border border-gray-200 py-3 px-11 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-10 "
+            <button
+              className="rounded-2xl  appearance-none block w-full bg-wine text-white border border-gray-200 py-3 px-11 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-10 "
               disabled={!hasAgreedToTerms}
+              type="submit"
             >
               Continuar
 
@@ -236,7 +246,6 @@ export default function screenRegister() {
           </div>
         </div>
       </form>
-
     </>
   )
 }
