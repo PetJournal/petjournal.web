@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-function PetRegisterPage() {
+function PetSelect() {
   return (
-    <div className="flex h-screen flex-col p-4 font-fredoka text-custom-purple">
-      <header className="flex w-full relative justify-center mb-9 border-b p-3">
+    <div className="flex h-screen flex-col p-4">
+      <header className="flex w-full relative justify-center mb-9">
         <Link href="/" className="absolute left-0 top-1/2 -translate-y-1/2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ function PetRegisterPage() {
       </header>
       <div className="flex flex-col justify-between text-center h-full">
         <div>
-          <h2 className="text-lg font-bold leading-4">Olá, Fulano!</h2>
+          <h2>Olá Clevinho, gostaríamos de saber qual a espécie do seu Pet:</h2>
           <p className="mt-3">
             Sabemos o quanto o seu pet é especial, e estamos muito animados em
             recebê-los. Venha se juntar a nossa comunidade de amantes de pets,
@@ -65,4 +65,4 @@ function PetRegisterPage() {
   );
 }
 
-export default PetRegisterPage;
+export default PetSelect ;
