@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Inputs } from '@/@types/Inputs';
 import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '@/utils/Regex';
 import logo from '../../public/Logo.svg';
 import axios from './api/axios';
+import { useRouter } from 'next/router';
 
 
 export default function screenRegister() {
@@ -16,6 +17,7 @@ export default function screenRegister() {
     formState: { errors }
   } = useForm<Inputs>();
   
+  const router = useRouter();
   
 
   const watchedPassword = watch('password');
@@ -27,10 +29,10 @@ export default function screenRegister() {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
+  
 
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-
     axios
       .post('/signup',{
         firstName: name,
@@ -41,13 +43,23 @@ export default function screenRegister() {
         passwordConfirmation: passwordConfirmation,
         isPrivacyPolicyAccepted: hasAgreedToTerms
       })
-      .then(response => {
-        console.log(response.data)
+      .then(({ data }) => {
+        setName('')
+        setLastName('')
+        setEmail('')
+        setTelPhone('')
+        setPassword('')
+        setPasswordConfirmation('')
+        setHasAgreedToTerms(false)
+        alert('Cadastro realizado com sucesso')
+        router.push('/login')
+        
       })
-      .catch(error => {
-        console.log(error)
+      .catch((error) => {
+        alert('Ops alguma coisa deu errado, email ou telefone já cadastrado!')
       })
-      console.log(data);
+    
+
   }
 
   return (
