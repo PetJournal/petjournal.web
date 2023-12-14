@@ -7,6 +7,7 @@ import Image from 'next/image';
 import axios from '@/pages/api/axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ToastNotification, { showErrorToast, showSuccessToast } from '@/utils/toast-notification';
 
 
 function ChangePasswordForm() {
@@ -89,32 +90,14 @@ function ChangePasswordForm() {
     const res = response ? response.data.message : 'Erro ao processar a solicitação.'
 
     if (res == "Password reset completed successfully") {
-      toast.success("Senha redefinida. Redirecionando...", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      })
+      showSuccessToast("Senha redefinida. Redirecionando...")
       setTimeout(() => {
         push({
           pathname: '/login'
         })
       }, 3000)
     } else {
-      toast.error("Erro! Tente novamente mais tarde.", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        pauseOnHover: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      })
+      showErrorToast("Erro! Tente novamente mais tarde.")
     }
   }
 
@@ -220,6 +203,7 @@ function ChangePasswordForm() {
           Redefinir senha
         </button>
       </div>
+      <ToastNotification />
     </form>
   );
 }
