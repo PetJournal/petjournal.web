@@ -1,12 +1,17 @@
-import petJournalLogo from '../assets/svg/petJournalIcon.svg'
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import axios from './api/axios';
-import { toast, ToastContainer } from 'react-toastify';
+import Link from 'next/link';
+import clsx from 'clsx';
+
 import 'react-toastify/dist/ReactToastify.css';
+import ToastNotification, {
+  showErrorToast,
+  showSuccessToast,
+} from '@/utils/toast-notification';
+
+import petJournalLogo from '../assets/svg/petJournalIcon.svg'
 
 function recoveryCode() {
   const [inputValues, setInputValues] = useState(Array(6).fill(''));
@@ -52,58 +57,24 @@ function recoveryCode() {
       const response = await validateCode(inputValues)
 
       if (response.status == 200) {
-        toast.success("Sucesso. Redirecionando...", {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        })
+        showSuccessToast("Sucesso. Redirecionando...")
+
         setTimeout(() => {
           push({
             pathname: '/change-password',
             query: {accessToken: response.data.accessToken}
           })
         }, 3000)
+
       } else {
-        toast.error("Erro ao processar a solicitação.", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          pauseOnHover: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        })
+        showErrorToast("Erro ao processar a solicitação.")
       }
     } catch (err: any) {
       console.error(err)
       if (err.response.data.error == "Verification token mismatch or expired") {
-        toast.error("Código expirado ou inválido.", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          pauseOnHover: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        })
+        showErrorToast("Código expirado ou inválido.")
       } else {
-        toast.error("Erro ao processar a solicitação.", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          pauseOnHover: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        })
+        showErrorToast("Erro ao processar a solicitação.")
       }
     }
     setLoading(false)
@@ -111,18 +82,6 @@ function recoveryCode() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <div className='min-h-screen flex flex-col items-center justify-center'>
         <Image
           src={petJournalLogo}
@@ -185,8 +144,7 @@ function recoveryCode() {
         <p className='mt-8 text-[15px]'>Dica: Caso não encontre o e-mail na sua caixa de</p>
         <p className='text-[15px]'>entrada. Verifique a pasta de Spam!</p>
       </div>
-
-
+      <ToastNotification/>
     </>
   )
 }
