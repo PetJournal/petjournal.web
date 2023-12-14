@@ -1,10 +1,18 @@
 import React, { FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import axios from '@/pages/api/axios';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ToastNotification, {
+  showErrorToast,
+  showSuccessToast,
+} from '@/utils/toast-notification';
 import useInput from '@/hooks/useInput';
+
 import toggleShowPassword from '/public/images/show-password.svg';
 import toggleHidePassword from '/public/images/hide-password.svg';
-import Image from 'next/image';
-
 
 function ChangePasswordForm() {
   const passwordProps = useInput({ validate: validatePassword });
@@ -13,21 +21,18 @@ function ChangePasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [accountAccess, setAccountAccess] = useState(false);
-  const { push } = useRouter();
+  const [loading, setLoading] = useState(false);
+  const { push, query } = useRouter();
+  const { accessToken } = query;
 
   const isButtonDisabled = !(
     !!passwordProps.value &&
     !!confirmPasswordProps.value &&
     !passwordProps.error &&
     !confirmPasswordProps.error &&
-    !confirmPasswordError
-  );
-
-  const showPasswordMessage =
-    isButtonDisabled &&
-    !passwordProps.error &&
-    !confirmPasswordProps.error &&
-    !confirmPasswordError;
+    !confirmPasswordError &&
+    !loading
+  )
 
   function validatePassword(value: string) {
     const passwordRegex =
@@ -59,20 +64,77 @@ function ChangePasswordForm() {
     return undefined;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleChangePassword(
+    password: string,
+    passwordConfirmation: string,
+  ) {
+    const token = accessToken;
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    return axios.patch(
+      '/guardian/change-password',
+      {
+        password,
+        passwordConfirmation,
+      },
+      {
+        headers,
+      },
+    );
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    push('/login');
+    setLoading(true);
+    const response = await handleChangePassword(
+      passwordProps.value,
+      confirmPasswordProps.value,
+    );
+    setLoading(false);
+
+    const res = response
+      ? response.data.message
+      : 'Erro ao processar a solicitação.';
+
+    if (res == 'Password reset completed successfully') {
+      showSuccessToast('Senha redefinida. Redirecionando...');
+      setTimeout(() => {
+        push({
+          pathname: '/login',
+        });
+      }, 3000);
+    } else {
+      showErrorToast('Erro! Tente novamente mais tarde.');
+    }
   }
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="max-w-[375px]">
-      <div className='flex flex-col gap-6'>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <div className="flex flex-col gap-6">
         <div>
-          <label htmlFor="password" className='text-custom-purple font-medium text-sm'>
+          <label
+            htmlFor="password"
+            className="text-custom-purple font-medium text-sm"
+          >
             Nova senha
           </label>
-          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md">
+          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md mt-2">
             <input
               type={showPassword ? 'text' : 'password'}
               {...passwordProps}
@@ -83,13 +145,17 @@ function ChangePasswordForm() {
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
             >
-              {showPassword ? <Image
-                src={toggleShowPassword}
-                alt="Ícone de olho para mostrar e esconder a senha"
-              /> : <Image
-                src={toggleHidePassword}
-                alt="Ícone de olho para mostrar e esconder a senha"
-              />}
+              {showPassword ? (
+                <Image
+                  src={toggleShowPassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              ) : (
+                <Image
+                  src={toggleHidePassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              )}
             </button>
           </div>
           {passwordProps.error && (
@@ -98,10 +164,13 @@ function ChangePasswordForm() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className='text-custom-purple font-medium text-sm'>
+          <label
+            htmlFor="confirmPassword"
+            className="text-custom-purple font-medium text-sm"
+          >
             Confirmar senha
           </label>
-          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md">
+          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md mt-2">
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               {...confirmPasswordProps}
@@ -112,13 +181,17 @@ function ChangePasswordForm() {
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
             >
-              {showConfirmPassword ? <Image
-                src={toggleShowPassword}
-                alt="Ícone de olho para mostrar e esconder a senha"
-              /> : <Image
-                src={toggleHidePassword}
-                alt="Ícone de olho para mostrar e esconder a senha"
-              />}
+              {showConfirmPassword ? (
+                <Image
+                  src={toggleShowPassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              ) : (
+                <Image
+                  src={toggleHidePassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              )}
             </button>
           </div>
           {confirmPasswordProps.error && (
@@ -143,18 +216,20 @@ function ChangePasswordForm() {
         </label>
       </div>
 
-      <div className='w-full flex justify-center'>
+      <div className="w-full flex justify-center">
         <button
           type="submit"
-          className={`w-[154px] h-[48px] flex self-center font-medium items-center justify-center rounded-[16px] mt-16 ${isButtonDisabled
-            ? 'bg-transparent border-2 border-[#B2B2B2] text-[#B2B2B2]'
-            : 'bg-custom-purple text-white'
-            }`}
+          className={`w-[154px] h-[48px] flex self-center font-medium items-center justify-center rounded-[16px] mt-16 ${
+            isButtonDisabled
+              ? 'bg-transparent border-2 border-[#B2B2B2] text-[#B2B2B2]'
+              : 'bg-custom-purple text-white'
+          }`}
           disabled={isButtonDisabled}
         >
           Redefinir senha
         </button>
       </div>
+      <ToastNotification />
     </form>
   );
 }
