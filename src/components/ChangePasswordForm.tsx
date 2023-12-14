@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import axios from '@/pages/api/axios';
 
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ToastNotification, {
   showErrorToast,
@@ -114,18 +113,6 @@ function ChangePasswordForm() {
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className="max-w-[375px]">
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <div className="flex flex-col gap-6">
         <div>
           <label
