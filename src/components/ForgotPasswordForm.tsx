@@ -3,12 +3,12 @@ import axios from '@/pages/api/axios';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import ToastNotification, { showErrorToast, showSuccessToast } from '@/utils/toast-notification';
+
 
 type FormData = {
-  email: string;
+  email: string
 }
 
 const emailSchema = z.object({
@@ -25,89 +25,43 @@ function ForgotPasswordForm() {
     mode: 'onChange',
   });
 
-  const [loading, setLoading] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(!isValid);
-  const [submissionMsg, setSubmissionMsg] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(!isValid)
+  const [submissionMsg, setSubmissionMsg] = useState('')
 
   useEffect(() => {
     setIsButtonDisabled(!isValid)
     setSubmissionMsg('')
   }, [isValid])
 
-  const handleFormSubmit: SubmitHandler<FormData> = (data) => {
+  const handleFormSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
     setIsButtonDisabled(true)
-    axios.post('/forget-password', data)
-      .then((response) => {
-        const res = response ? response.data.message : 'Erro ao processar a solicitação.'
-
-        if (res == "Email sent successfully") {
-          toast.success("Sucesso. Redirecionando...", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          })
-          setTimeout(() => {
-            push({
-              pathname: '/recovery-code',
-              query: data
-            })
-          }, 3000)
-        } else {
-          toast.error(res, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            pauseOnHover: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          })
-        }
-
-        setLoading(false);
-        setIsButtonDisabled(false)
-      })
-      .catch((err) => {
-        const error = err.response ? err.response.data.error : 'Erro ao processar a solicitação.'
-
-        if (error == "Not found: email") {
-          toast.error("E-mail não encontrado.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        } else {
-          toast.error("Erro ao processar a solicitação.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            pauseOnHover: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-
-        setLoading(false)
-        setIsButtonDisabled(false)
-
-      });
+  
+    try {
+      const response = await axios.post('/forget-password', data)
+      const res = response ? response.data.message : 'Erro ao processar a solicitação.'
+  
+      if (res === "Email sent successfully") {
+        showSuccessToast("E-mail enviado com sucesso.")
+      } else {
+        showErrorToast(res)
+      }
+    } catch (err: any) {
+      const error = err.response ? err.response.data.error : 'Erro ao processar a solicitação.'
+  
+      if (error === "Not found: email") {
+        showErrorToast("E-mail não encontrado.")
+      } else {
+        showErrorToast("Erro ao processar a solicitação.")
+      }
+    }
+  
+    setLoading(false)
+    setIsButtonDisabled(false)
   }
-
-  const { push } = useRouter();
+  
+  const { push } = useRouter()
 
   const handleRedirectToLogin = () => {
     push('/login')
@@ -157,20 +111,9 @@ function ForgotPasswordForm() {
           Cancelar
         </button>
       </div>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <ToastNotification />
     </form>
   );
 }
 
-export default ForgotPasswordForm;
+export default ForgotPasswordForm
