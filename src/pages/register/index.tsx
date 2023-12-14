@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Inputs } from '@/@types/Inputs';
 import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '@/utils/Regex';
-import logo from '../../public/Logo.svg';
-import axios from './api/axios';
+import logo from '@/../public/Logo.svg';
+import axios from '../api/axios';
 import { useRouter } from 'next/router';
 
 
@@ -21,35 +21,38 @@ export default function screenRegister() {
   
 
   const watchedPassword = watch('password');
+  const formsValues = {
+    name: '',
+    lastName: '',
+    email: '',
+    telPhone: '',
+    password: '',
+    confirmPassword: '',
+  }
 
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [telPhone, setTelPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
+  const [ dataForm, setDataForm ] = useState<Inputs>(formsValues)
   
-
+  const handleChange = (fieldName: keyof Inputs, value: string) => {
+    setDataForm((prevData) => ({
+      ...prevData,
+      [fieldName]: value,
+    }));
+  };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     axios
       .post('/signup',{
-        firstName: name,
-        lastName: lastName,
-        email: email,
-        phone: telPhone,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
+        firstName: dataForm.name,
+        lastName: dataForm.lastName,
+        email: dataForm.email,
+        phone: dataForm.telPhone,
+        password: dataForm.password,
+        passwordConfirmation: dataForm.confirmPassword,
         isPrivacyPolicyAccepted: hasAgreedToTerms
       })
       .then(({ data }) => {
-        setName('')
-        setLastName('')
-        setEmail('')
-        setTelPhone('')
-        setPassword('')
-        setPasswordConfirmation('')
+        setDataForm(formsValues)
         setHasAgreedToTerms(false)
         alert('Cadastro realizado com sucesso')
         router.push('/login')
@@ -82,8 +85,8 @@ export default function screenRegister() {
                   type="text"
                   id="name"
                   {...register('name', { required: true, pattern: nameRegex })}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={dataForm.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
                   placeholder="Digite seu primeiro nome"
                 />
               </label>
@@ -106,8 +109,8 @@ export default function screenRegister() {
                 type="text"
                 id="lastName"
                 {...register('lastName', { required: true, pattern: nameRegex })}
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={dataForm.lastName}
+                onChange={(e) => handleChange('lastName', e.target.value)}
                 placeholder="Digite seu sobrenome"
               />
               </label>
@@ -128,8 +131,9 @@ export default function screenRegister() {
                 type="email"
                 id="email"
                 {...register('email', { required: true, pattern: emailRegex })}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={dataForm.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+
                 placeholder="E-mail"
               />
             </label>
@@ -155,8 +159,9 @@ export default function screenRegister() {
                     required: true,
                     pattern: phoneRegex
                   })}
-                  value={telPhone}
-                  onChange={(e) => setTelPhone(e.target.value)}
+                  value={dataForm.telPhone}
+                  onChange={(e) => handleChange('telPhone', e.target.value)}
+
                   placeholder="Telefone"
                 />
               </label>
@@ -184,9 +189,10 @@ export default function screenRegister() {
                   required: true,
                   pattern: passwordRegex,
                 })}
-                value={password}
+                value={dataForm.password}
                 placeholder="Senha"
-                onChange={ (e) => setPassword(e.target.value)}
+                onChange={(e) => handleChange('password', e.target.value)}
+
               />
             </label>
             {errors.password && errors.password.type === 'required' && (
@@ -212,8 +218,8 @@ export default function screenRegister() {
                   pattern: passwordRegex,
                   validate: (value) => value === watchedPassword || 'As senhas devem ser idênticas',
                 })}
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                value={dataForm.confirmPassword}
+                onChange={(e) => handleChange('confirmPassword', e.target.value)}
                 placeholder="Confirmar Senha"
               />
             </label>
