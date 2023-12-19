@@ -8,7 +8,6 @@ import logo from '@/../public/Logo.svg';
 import axios from '../api/axios';
 import { useRouter } from 'next/router';
 
-
 export default function screenRegister() {
   const {
     register,
@@ -18,7 +17,6 @@ export default function screenRegister() {
   } = useForm<Inputs>();
   
   const router = useRouter();
-  
 
   const watchedPassword = watch('password');
   const formsValues = {
@@ -31,7 +29,8 @@ export default function screenRegister() {
   }
 
   const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
-  const [ dataForm, setDataForm ] = useState<Inputs>(formsValues)
+  const [ dataForm, setDataForm ] = useState<Inputs>(formsValues);
+  const [ isloading, setIsLoading ] = useState(false);
   
   const handleChange = (fieldName: keyof Inputs, value: string) => {
     setDataForm((prevData) => ({
@@ -56,7 +55,6 @@ export default function screenRegister() {
         setHasAgreedToTerms(false)
         alert('Cadastro realizado com sucesso')
         router.push('/login')
-        
       })
       .catch((error) => {
         alert('Ops alguma coisa deu errado, email ou telefone já cadastrado!')
@@ -254,12 +252,13 @@ export default function screenRegister() {
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <button
-              className="rounded-2xl  appearance-none block w-full bg-wine text-white border border-gray-200 py-3 px-11 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-10 "
+              className="rounded-2xl appearance-none block w-full bg-wine text-white border border-gray-200 py-3 px-11 mb-3 leading-tight focus:outline-none focus:bg-wine focus:border-gray-500 mt-10 "
               disabled={!hasAgreedToTerms}
               type="submit"
             >
-              Continuar
-
+              {
+                isloading ? 'Cadastrando': 'Cadastrar'
+              }
             </button>
           </div>
         </div>
