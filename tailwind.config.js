@@ -10,7 +10,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      fredoka: 'var(--font-fredoka)',
+      // fredoka: 'var(--font-fredoka)',
+      'fredoka': ['Fredoka', 'sans-serif'],
     },
     extend: {
       backgroundColor: {
