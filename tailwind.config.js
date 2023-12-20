@@ -37,23 +37,7 @@ module.exports = {
       stroke: {
         'custom-blue': '#54C1E9',
       },
-      colors: {
-        'primary/300': '#E06197',
-        'primary/400': '#9A0963',
-      },
-      fontSize: {
-        sm: '0.8rem',
-        base: '1rem',
-        xl: '1.125rem', // 18px
-        '2xl': '1.375rem', // 22px
-        '3xl': '1.953rem',
-        '4xl': '2.441rem',
-        '5xl': '3.052rem',
-      },
-      lineHeight: {
-        'extra-loose': '1.65',
-      },
-    }
+    },
   },
   plugins: [],
 };

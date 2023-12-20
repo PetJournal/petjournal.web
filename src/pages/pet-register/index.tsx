@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function PetRegisterPage() {
   return (
-    <div className="flex h-screen flex-col p-4 font-fredoka text-primary/400 items-center">
+    <div className="flex h-screen flex-col p-4 font-fredoka text-custom-purple items-center">
       <header className="flex w-[375px] relative justify-center border-b py-2">
         <Link href="/" className="absolute left-0 top-1/2 -translate-y-1/2">
           <svg
@@ -56,7 +56,7 @@ function PetRegisterPage() {
         ></Image>
         <Link
           href="/pet-register/species"
-          className="block mx-auto mt-[54px] p-3 w-[202px] rounded-full text-[#F2F2F2] bg-primary/400 text-center"
+          className="block mx-auto mt-[54px] p-3 w-[202px] rounded-full text-[#F2F2F2] bg-[#9A0963] text-center"
         >
           Continuar
         </Link>
