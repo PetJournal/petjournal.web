@@ -40,6 +40,7 @@ module.exports = {
       colors: {
         'primary/300': '#E06197',
         'primary/400': '#9A0963',
+        'gray/300': '#B2B2B2',
       },
       fontSize: {
         sm: '0.8rem',

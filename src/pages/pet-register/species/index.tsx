@@ -10,13 +10,6 @@ interface Item {
 }
 
 function PetSelect() {
-  // Defina um estado para armazenar os itens
-  const [itens, setItens] = useState<Item[]>([
-    { id: 1, nome: 'Item 1' },
-    { id: 2, nome: 'Item 2' },
-    { id: 3, nome: 'Item 3' },
-    // Adicione outros itens conforme necessário
-  ]);
 
   return (
     <div className="flex h-screen flex-col p-4 font-fredoka text-primary/400">
@@ -54,7 +47,7 @@ function PetSelect() {
         </Link> */}
         <h1 className="">Cadastro Pet</h1>
       </header>
-      <div className="flex flex-col justify-between text-center h-full">
+      <div className="flex flex-col justify-between text-center items-center h-full">
         <div>
           <h2 className="font-medium w-[343px] text-center text-2xl leading-extra-loose">
             Olá <span className="text-primary/300  ">Clevinho</span>, gostaríamos de saber
@@ -62,23 +55,24 @@ function PetSelect() {
           </h2>
         </div>
 
-        <CardAnimal />
- 
-
-        <button type='button'>
-          Outros...
-        </button>
+        <div className='w-[340px] h-[283px]'>
+          <CardAnimal />
+          <button type='button'>
+            Outros...
+          </button>
+        </div>
+        
 
         <div className="flex justify-center gap-3">
           <Link
             href="/pet-register"
-            className="block p-3 w-1/2 border rounded-full border-primary/400"
+            className="block p-3 border rounded-full border-primary/400"
           >
             Voltar
           </Link>
           <Link
             href="/pet-register/species"
-            className="block mx-auto p-3 w-1/2 rounded-full text-[#F2F2F2] bg-primary/400"
+            className="block mx-auto p-3 rounded-full text-[#F2F2F2] bg-primary/400"
           >
             Continuar
           </Link>
