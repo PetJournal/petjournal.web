@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 function PetRegisterPage() {
   return (
-    <div className="flex h-screen flex-col p-4 font-fredoka text-custom-purple">
-      <header className="flex w-full relative justify-center mb-9 border-b p-3">
+    <div className="flex h-screen flex-col p-4 font-fredoka text-custom-purple items-center">
+      <header className="flex w-[375px] relative justify-center border-b py-2">
         <Link href="/" className="absolute left-0 top-1/2 -translate-y-1/2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -38,10 +38,10 @@ function PetRegisterPage() {
         </Link>
         <h1 className="">Cadastro Pet</h1>
       </header>
-      <div className="flex flex-col justify-between text-center h-full">
-        <div>
-          <h2 className="font-fredoka text-lg font-bold text-center py-1">Olá Clevinho!</h2>
-          <p className="mt-3">
+      <div className="flex flex-col h-full">
+        <div className='text-lg mt-[38px]'>
+          <h2 className="font-bold text-center ">Olá Clevinho!</h2>
+          <p className="leading-[1.7rem] text-[18px] mt-[12px] w-[343px] text-center font-[400]">
             Sabemos o quanto o seu pet é especial, e estamos muito animados em
             recebê-los. Venha se juntar a nossa comunidade de amantes de pets,
             para melhor aproveitar a nossa plataforma.
@@ -52,11 +52,11 @@ function PetRegisterPage() {
           alt="ilustração de animais"
           width={500}
           height={500}
-          className="w-[82%] block mx-auto"
+          className="w-[82%] block mx-auto mt-[35px]"
         ></Image>
         <Link
           href="/pet-register/species"
-          className="block mx-auto p-3 w-52 rounded-full text-[#F2F2F2] bg-[#9A0963]"
+          className="block mx-auto mt-[54px] p-3 w-[202px] rounded-full text-[#F2F2F2] bg-[#9A0963] text-center"
         >
           Continuar
         </Link>
