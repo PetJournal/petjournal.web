@@ -1,152 +1,148 @@
-// Hooks
-import { FormEvent, useState } from 'react';
-import useInput from '@/hooks/useInput';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-
-// Components
 import Link from 'next/link';
+import axios from '../pages/api/axios';
+import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
+import Image from 'next/image';
+import toggleShowPassword from '/public/images/show-password.svg';
 
-function validateEmailOrPhone(value: string): string | undefined {
-  if (!value) {
-    return 'Este campo é obrigatório!';
-  }
+const loginFormSchema = z.object({
+  email: z
+    .string()
+    .email('Digite um email válido')
+    .nonempty('Este campo é obrigatório!'),
+  password: z
+    .string()
+    .nonempty('Este campo é obrigatório!')
+    .min(8, 'A senha deve ter pelo menos 8 caracteres'),
+});
 
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-
-  const phoneRegex =
-    /^\(?(?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\)? ?(?:[2-8]|9[1-9])[0-9]{3}\-?[0-9]{4}$/;
-
-  if (!emailRegex.test(value)) {
-    if (!phoneRegex.test(value)) {
-      return 'Por favor, digite um e-mail ou celular válido.';
-    }
-  }
-
-  return undefined;
-}
-
-function validatePassword(value: string): string | undefined {
-  if (!value) {
-    return 'Este campo é obrigatório!';
-  }
-
-  if (value.length < 8) {
-    return 'A senha deve ter pelo menos 8 caracteres';
-  }
-
-  return undefined;
-}
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
 function LoginForm() {
-  const emailOrPhoneProps = useInput({ validate: validateEmailOrPhone });
-  const passwordProps = useInput({ validate: validatePassword });
-  const [rememberMe, setRememberMe] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    mode: 'onChange',
+  });
+
+  const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [submissionError, setSubmissionError] = useState('');
+  const [erroEnvio, setErroEnvio] = useState('');
   const { push } = useRouter();
 
-  const isButtonDisabled = !(
-    !!emailOrPhoneProps.value &&
-    !!passwordProps.value &&
-    !emailOrPhoneProps.error &&
-    !passwordProps.error
-  );
+  const isButtonDisabled = !!errors.email || !!errors.password || loading;
 
-  function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function handleFormSubmit(data: LoginFormValues) {
     setLoading(true);
 
-    fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: emailOrPhoneProps.value,
-        password: passwordProps.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setLoading(false);
-
-        if (data.error) {
-          setSubmissionError(data.error);
-          return;
-        }
-
-        push('/profile');
+    axios
+      .post('/login', {
+        email: data.email,
+        password: data.password,
       })
-      .catch(() => {
+      .then((response) => {
         setLoading(false);
-        setSubmissionError('Algo deu errado. Tente novamente, por favor.');
+
+        Cookies.set('accessToken', response.data.accessToken, {
+          expires: 7,
+          path: '/',
+          secure: true,
+        });
+
+        push('/');
+      })
+      .catch((err) => {
+        if (err.isAxiosError) {
+          const axiosError = err as AxiosError;
+          console.log(axiosError.response?.data);
+        }
+        setLoading(false);
+        setErroEnvio('Algo deu errado. Tente novamente, por favor.');
       });
   }
 
   return (
     <form
       className="flex flex-col gap-y-4"
-      onSubmit={(event) => handleFormSubmit(event)}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <label>
-        <span className="mb-1 block">Login</span>
-        <div>
-          <div className="border border-neutral-300 py-1 px-2">
-            <input
-              type="text"
-              {...emailOrPhoneProps}
-              className="w-full outline-0"
-            />
-          </div>
-          {emailOrPhoneProps.error && (
-            <span className="text-red-600 text-xs">
-              {emailOrPhoneProps.error}
-            </span>
-          )}
+        <div className="text-custom-purple text-sm font-medium">Login</div>
+        <div className="border border-[#1b1b1b] rounded-[5px] py-2 px-1">
+          <input
+            type="text"
+            {...register('email')}
+            className="w-full outline-0 text-[#292929] font-medium placeholder:text-[#BFBFBF]"
+            placeholder="E-mail"
+          />
         </div>
+        {errors.email && (
+          <span className="text-red-600 text-xs">{errors.email.message}</span>
+        )}
       </label>
       <label>
-        <span className="mb-1 block">Senha</span>
-        <div>
-          <div className="border border-neutral-300 flex py-1 px-2">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              {...passwordProps}
-              className="w-full outline-0"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
-          </div>
-          {passwordProps.error && (
-            <span className="text-red-600 text-xs">{passwordProps.error}</span>
-          )}
-        </div>
-      </label>
-      <div className="flex justify-between gap-x-2">
-        <label>
+        <div className="text-custom-purple text-sm font-medium">Senha</div>
+        <div className="border border-[#1b1b1b] rounded-[5px] flex py-2 px-1">
           <input
-            className="mr-1"
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            className="w-full outline-0 text-[#292929] font-medium placeholder:text-[#BFBFBF]"
+            placeholder="Senha"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="px-1"
+          >
+            <Image
+              src={toggleShowPassword}
+              alt="Ícone de olho para mostrar e esconder a senha"
+            />
+          </button>
+        </div>
+        {errors.password && (
+          <span className="text-red-600 text-xs">
+            {errors.password.message}
+          </span>
+        )}
+      </label>
+      <div className="flex justify-between px-1">
+        <label className="flex items-center justify-center relative">
+          <input
+            className="appearance-none w-5 h-5 rounded-full border-2 border-custom-purple mr-1"
             type="checkbox"
-            checked={rememberMe}
-            onChange={(event) => setRememberMe(event.target.checked)}
+            checked={remember}
+            onChange={(event) => setRemember(event.target.checked)}
           />
           <span>Lembrar</span>
+          {remember && (
+            <div className="absolute w-2 h-2 bg-custom-purple rounded-full left-[0.375rem]"></div>
+          )}
         </label>
         <Link className="underline" href="#">
           Esqueci minha senha
         </Link>
       </div>
-      {submissionError && (
-        <span className="text-center text-xs text-red-600">
-          {submissionError}
-        </span>
+      {erroEnvio && (
+        <span className="text-center text-xs text-red-600">{erroEnvio}</span>
       )}
       <button
-        className={`text-center py-2 px-4 bg-neutral-200 ${
-          isButtonDisabled ? 'text-neutral-400' : 'text-neutral-900'
+        className={`flex self-center font-medium items-center justify-center  rounded-[45px] px-11 py-3 mt-16 ${
+          isButtonDisabled
+            ? 'bg-transparent border-2 border-[#B2B2B2] text-[#B2B2B2]'
+            : 'bg-custom-purple text-white'
         }`}
         type="submit"
         disabled={isButtonDisabled}

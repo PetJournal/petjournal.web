@@ -9,15 +9,33 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      fredoka: 'var(--font-fredoka)',
+    },
     extend: {
-      fontFamily: {
-        'fredoka': ['Fredoka', 'sans-serif'],
+      backgroundColor: {
+        'custom-blue': '#8093F1',
+        'custom-cyan': '#AFD9DB',
+        'custom-pink': '#FFB8EB',
+        'custom-purple': '#9A0963',
+        'custom-purple-hover': '#6E0046',
       },
-      colors: {
-        'gray-border': 'rgba(122, 122, 122, 1)',
-        'wine': 'rgba(154, 9, 99, 1)',
-        'purple-pallet': '#F5F0FF'
-      }
+      textColor: {
+        'custom-purple': '#9A0963',
+        'custom-purple-hover': '#6E0046',
+        'custom-blue': '#54C1E9',
+      },
+      borderColor: {
+        'custom-purple': '#9A0963',
+        'custom-purple-hover': '#6E0046',
+      },
+      ringColor: {
+        'custom-purple': '#9A0963',
+        'custom-purple-hover': '#6E0046',
+      },
+      stroke: {
+        'custom-blue': '#54C1E9',
+      },
     },
   },
   plugins: [],
