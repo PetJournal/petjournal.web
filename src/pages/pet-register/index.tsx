@@ -40,7 +40,7 @@ function PetRegisterPage() {
       </header>
       <div className="flex flex-col justify-between text-center h-full">
         <div>
-          <h2 className="font-fredoka text-lg font-bold text-center py-1">Olá Clevinho!</h2>
+          <h2 className="text-lg font-bold leading-4">Olá, Fulano!</h2>
           <p className="mt-3">
             Sabemos o quanto o seu pet é especial, e estamos muito animados em
             recebê-los. Venha se juntar a nossa comunidade de amantes de pets,
