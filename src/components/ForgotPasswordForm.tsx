@@ -82,10 +82,10 @@ function ForgotPasswordForm() {
           </div>
           {
             errors.email &&
-            <span className="text-center text-xs text-red-600">{errors.email.message}</span>
+            <span className="text-center text-xs font-bold text-red-600">{errors.email.message}</span>
           }
           {!errors.email && submissionMsg &&
-            <span className="text-center text-xs text-red-600">{submissionMsg}</span>
+            <span className="text-center text-xs font-bold text-red-600">{submissionMsg}</span>
           }
         </div>
       </label>
