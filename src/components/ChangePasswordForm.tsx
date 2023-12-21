@@ -31,7 +31,7 @@ function ChangePasswordForm() {
     !confirmPasswordProps.error &&
     !confirmPasswordError &&
     !loading
-  )
+  );
 
   function validatePassword(value: string) {
     const passwordRegex =
