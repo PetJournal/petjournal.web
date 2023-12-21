@@ -43,7 +43,15 @@ function ForgotPasswordForm() {
       const res = response ? response.data.message : 'Erro ao processar a solicitação.'
   
       if (res === "Email sent successfully") {
-        showSuccessToast("E-mail enviado com sucesso.")
+        showSuccessToast("E-mail enviado com sucesso. Redirecionando...")
+
+        setTimeout(() => {
+          push({
+            pathname: '/recovery-code',
+            query: {email: data.email}
+          })
+        }, 3000)
+
       } else {
         showErrorToast(res)
       }
