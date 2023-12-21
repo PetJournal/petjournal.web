@@ -12,6 +12,7 @@ import useInput from '@/hooks/useInput';
 
 import toggleShowPassword from '/public/images/show-password.svg';
 import toggleHidePassword from '/public/images/hide-password.svg';
+import { passwordRegex } from '@/utils/Regex';
 
 function ChangePasswordForm() {
   const passwordProps = useInput({ validate: validatePassword });
@@ -34,9 +35,6 @@ function ChangePasswordForm() {
   );
 
   function validatePassword(value: string) {
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-
     if (!value) {
       return 'Este campo é obrigatório';
     }
