@@ -1,6 +1,18 @@
 import React, { FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import axios from '@/pages/api/axios';
+
+import 'react-toastify/dist/ReactToastify.css';
+import ToastNotification, {
+  showErrorToast,
+  showSuccessToast,
+} from '@/utils/toast-notification';
 import useInput from '@/hooks/useInput';
+
+import toggleShowPassword from '/public/images/show-password.svg';
+import toggleHidePassword from '/public/images/hide-password.svg';
+import { passwordRegex } from '@/utils/Regex';
 
 function ChangePasswordForm() {
   const passwordProps = useInput({ validate: validatePassword });
@@ -9,26 +21,20 @@ function ChangePasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [accountAccess, setAccountAccess] = useState(false);
-  const { push } = useRouter();
+  const [loading, setLoading] = useState(false);
+  const { push, query } = useRouter();
+  const { accessToken } = query;
 
   const isButtonDisabled = !(
     !!passwordProps.value &&
     !!confirmPasswordProps.value &&
     !passwordProps.error &&
     !confirmPasswordProps.error &&
-    !confirmPasswordError
+    !confirmPasswordError &&
+    !loading
   );
 
-  const showPasswordMessage =
-    isButtonDisabled &&
-    !passwordProps.error &&
-    !confirmPasswordProps.error &&
-    !confirmPasswordError;
-
   function validatePassword(value: string) {
-    const passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-
     if (!value) {
       return 'Este campo é obrigatório';
     }
@@ -55,18 +61,65 @@ function ChangePasswordForm() {
     return undefined;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleChangePassword(
+    password: string,
+    passwordConfirmation: string,
+  ) {
+    const token = accessToken;
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    return axios.patch(
+      '/guardian/change-password',
+      {
+        password,
+        passwordConfirmation,
+      },
+      {
+        headers,
+      },
+    );
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    push('/login');
+    setLoading(true);
+    const response = await handleChangePassword(
+      passwordProps.value,
+      confirmPasswordProps.value,
+    );
+    setLoading(false);
+
+    const res = response
+      ? response.data.message
+      : 'Erro ao processar a solicitação.';
+
+    if (res == 'Password reset completed successfully') {
+      showSuccessToast('Senha redefinida. Redirecionando...');
+      setTimeout(() => {
+        push({
+          pathname: '/login',
+        });
+      }, 3000);
+    } else {
+      showErrorToast('Erro! Tente novamente mais tarde.');
+    }
   }
 
   return (
-    <form onSubmit={(event) => handleSubmit(event)} className="max-w-lg">
-      <div className="space-y-3">
+    <form onSubmit={(event) => handleSubmit(event)} className="max-w-[375px]">
+      <div className="flex flex-col gap-6">
         <div>
-          <label htmlFor="password">Nova senha</label>
-          <div className="flex justify-between p-1 px-2 border-2">
+          <label
+            htmlFor="password"
+            className="text-custom-purple font-medium text-sm"
+          >
+            Nova senha
+          </label>
+          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md mt-2">
             <input
               type={showPassword ? 'text' : 'password'}
               {...passwordProps}
@@ -77,24 +130,32 @@ function ChangePasswordForm() {
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
             >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
+              {showPassword ? (
+                <Image
+                  src={toggleShowPassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              ) : (
+                <Image
+                  src={toggleHidePassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              )}
             </button>
           </div>
-          {showPasswordMessage && (
-            <p className="mt-1 text-sm leading-4 text-gray-500">
-              A senha deve ter pelo menos 8 caracteres. Para torná-la mais
-              forte, use letras maiúsculas e minúsculas, números e símbolos como
-              ! @ # $ % & * =
-            </p>
-          )}
           {passwordProps.error && (
             <p className="text-xs text-red-500">{passwordProps.error}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="confirmPassword">Confirmar senha</label>
-          <div className="flex justify-between p-1 px-2 border-2">
+          <label
+            htmlFor="confirmPassword"
+            className="text-custom-purple font-medium text-sm"
+          >
+            Confirmar senha
+          </label>
+          <div className="flex w-full h-12 justify-between p-1 px-4 border-2 rounded-md mt-2">
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               {...confirmPasswordProps}
@@ -105,7 +166,17 @@ function ChangePasswordForm() {
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
             >
-              {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
+              {showConfirmPassword ? (
+                <Image
+                  src={toggleShowPassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              ) : (
+                <Image
+                  src={toggleHidePassword}
+                  alt="Ícone de olho para mostrar e esconder a senha"
+                />
+              )}
             </button>
           </div>
           {confirmPasswordProps.error && (
@@ -117,28 +188,33 @@ function ChangePasswordForm() {
         </div>
       </div>
 
-      <div className="flex mt-5">
+      <div className="flex items-baseline justify-center mt-5 gap-2">
         <input
           type="checkbox"
           id="check"
           checked={accountAccess}
           onChange={(event) => setAccountAccess(event.target.checked)}
         />
-        <label htmlFor="check" className="pl-2 leading-5">
+        <label htmlFor="check" className="text-sm">
           É necessário que todos os dispositivos acessem sua conta com a nova
           senha?
         </label>
       </div>
 
-      <button
-        type="submit"
-        className={`bg-gray-300 py-2 mt-5 w-full rounded-full ${
-          isButtonDisabled && 'text-gray-400 bg-gray-200'
-        }`}
-        disabled={isButtonDisabled}
-      >
-        Redefinir senha
-      </button>
+      <div className="w-full flex justify-center">
+        <button
+          type="submit"
+          className={`w-[154px] h-[48px] flex self-center font-medium items-center justify-center rounded-[16px] mt-16 ${
+            isButtonDisabled
+              ? 'bg-transparent border-2 border-[#B2B2B2] text-[#B2B2B2]'
+              : 'bg-custom-purple text-white'
+          }`}
+          disabled={isButtonDisabled}
+        >
+          Redefinir senha
+        </button>
+      </div>
+      <ToastNotification />
     </form>
   );
 }
