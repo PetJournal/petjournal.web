@@ -11,6 +11,7 @@ module.exports = {
   theme: {
     fontFamily: {
       fredoka: 'var(--font-fredoka)',
+      quicksand: ['Quicksand', 'sans-serif']
     },
     extend: {
       backgroundColor: {
@@ -36,6 +37,12 @@ module.exports = {
       stroke: {
         'custom-blue': '#54C1E9',
       },
+      colors: {
+        'primary/purple': '#7C54A7',
+        'gray/400': '#222121',
+        'gray/300': '#B2B2B2',
+        'gray/100': '#FAFAFA'
+      }
     },
   },
   plugins: [],
