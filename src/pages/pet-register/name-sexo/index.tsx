@@ -12,18 +12,18 @@ function  NameSexo() {
                <Icon />
             </Link>
             </header>
-            <main className="p-4 mt-2">
-                <span className="flex gap-1">
+            <main className="p-4 mt-2 ">
+                <span className="flex gap-1 ml-4">
                     <HouseComponent />
                     Cadastro pet
                 </span>
-                <div className="text-xl font-bold w-[327px] mt-[1rem]">
+                <div className="text-xl font-bold w-[327px] mt-[1rem] ml-4">
                     <h2>Uau!</h2>
                     <p className="mt-[0.5rem]">Ficamos muito felizes em receber mais um gato em nossa comunidade!</p>
                 </div>
-                <div className="flex flex-col gap-2 text-gray/400 mt-8">
+                <div className="flex flex-col gap-2 text-gray/400 mt-8 ml-4">
                     <h2 className="text-center font-semibold text-base">Qual o nome do seu companheiro?</h2>
-                    <label className="text-xs font-medium">Nome:</label>
+                    <label className="text-xs font-medium ml-1.5">Nome:</label>
                     <input type="text" placeholder="Digite aqui" className="border border-dashed  border-gray/300 w-[327px] px-1 py-2 rounded-lg" />
                 </div>
 
