@@ -24,32 +24,32 @@ function  NameSexo() {
                 <div className="flex flex-col gap-2 text-gray/400 mt-8">
                     <h2 className="text-center font-semibold text-base">Qual o nome do seu companheiro?</h2>
                     <label className="text-xs font-medium">Nome:</label>
-                    <input type="text" placeholder="Digite aqui" className="border border-dashed boder-gray/300 w-[327px] px-1 py-2 rounded-lg" />
+                    <input type="text" placeholder="Digite aqui" className="border border-dashed  border-gray/300 w-[327px] px-1 py-2 rounded-lg" />
                 </div>
 
                 <div className="text-gray/400 mt-6">
                     <h2 className="text-center font-semibold text-base">Qual o sexo do seu Pet?</h2>
                     <div className="flex justify-center gap-4 mt-4 ">
-                        <div className="border-gray/300 border-dashed gap-1 px-1 py-2 bg-white w-[133px]">
+                        <div className=" flex justify-center flex-col items-center border border-gray/300 border-dashed gap-1 px-1 py-2 bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2">
                             <Male />
                             <p className="text-sm font-semibold text-center">Macho</p>
                         </div>
-                        <div className="border border-dashed gap-1 px-1 py-2  bg-white w-[133px]">
+                        <div className="flex justify-center flex-col items-center border border-gray/300 border-dashed gap-1 px-1 py-2  bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2">
                             <Female />
                             <p className="text-sm font-semibold text-center">Fêmea</p>
                         </div>
                     </div>
                 </div>
-                <div className="mt-8 flex justify-center gap-1">
+                <div className="mt-8 flex justify-center gap-4">
                     <button
                         type="button"
-                        className="border  border-primary/purple text-gray/400 px-4 py-2 rounded-lg"
+                        className="border  border-primary/purple   text-primary/purple px-4 py-2 rounded-lg  w-[156px] h-[48px] font-bold"
                     >
                         Voltar
                     </button>
                     <button
                         type="button"
-                        className="bg-primary/purple text-white px-4 py-2 rounded-lg"
+                        className="bg-primary/purple text-white px-4 py-2 rounded-lg  w-[156px] h-[48px] font-bold"
                     >
                         Continuar
                     </button>
