@@ -16,6 +16,7 @@ import ToastNotification, {
   showErrorToast,
   showSuccessToast,
 } from '@/utils/toast-notification';
+import Link from 'next/link';
 
 export default function screenRegister() {
   const {
@@ -62,6 +63,7 @@ export default function screenRegister() {
       .then(({ data }) => {
         setDataForm(formsValues);
         setHasAgreedToTerms(false);
+        setIsLoading(true);
         showSuccessToast('Cadastro realizado com sucesso');
         router.push('/login');
       })
@@ -74,10 +76,10 @@ export default function screenRegister() {
   };
 
   return (
-    <>
-      <div className="flex items-center justify-center">
+    <main>
+      <Link className="flex items-center justify-center" href='/'>
         <Image src={logo} alt="Logo Pet Journal" />
-      </div>
+      </Link>
       <div className="flex items-center justify-center mt-4">
         <h1 className="font-fredoka font-medium  text-2xl ">Inscreva-se</h1>
       </div>
@@ -90,7 +92,7 @@ export default function screenRegister() {
           <div className="w-full px-3">
             <label
               htmlFor="name"
-              className="font-fredoka text-sm text-wine"
+              className="font-fredoka text-sm text-custom-purple"
             >
               Nome
               <input
@@ -122,7 +124,7 @@ export default function screenRegister() {
           <div className="w-full px-3">
             <label
               htmlFor="lastName"
-              className="font-fredoka text-sm text-wine"
+              className="font-fredoka text-sm text-custom-purple"
             >
               Sobrenome
               <input
@@ -154,7 +156,7 @@ export default function screenRegister() {
         </div>
         <div className="flex flex-wrap -mx-3 w-96">
           <div className="w-full px-3">
-            <label htmlFor="email" className="font-fredoka text-sm text-wine">
+            <label htmlFor="email" className="font-fredoka text-sm text-custom-purple">
               E-mail
               <input
                 className="rounded appearance-none block w-full bg-white text-gray-700 border border-gray-border py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 "
@@ -183,7 +185,7 @@ export default function screenRegister() {
           <div className="w-full px-3">
             <label
               htmlFor="telphone"
-              className="font-fredoka text-sm  text-wine"
+              className="font-fredoka text-sm  text-custom-purple"
             >
               Telefone
               <input
@@ -217,7 +219,7 @@ export default function screenRegister() {
           <div className="w-full px-3">
             <label
               htmlFor="password"
-              className="font-fredoka text-sm  text-wine"
+              className="font-fredoka text-sm  text-custom-purple"
             >
               Senha
               <input
@@ -252,7 +254,7 @@ export default function screenRegister() {
           <div className="w-full px-3">
             <label
               htmlFor="confirm-password"
-              className="font-fredoka text-sm  text-wine"
+              className="font-fredoka text-sm  text-custom-purple"
             >
               Confirmar Senha
               <input
@@ -299,7 +301,7 @@ export default function screenRegister() {
         <div className="flex justify-center ">
           <div className="flex justify-between gap-x-2">
             <input
-              className="w-4 color-wine"
+              className="w-4 color-custom-purple"
               checked={hasAgreedToTerms}
               onChange={(e) => setHasAgreedToTerms(e.target.checked)}
               type="radio"
@@ -323,12 +325,12 @@ export default function screenRegister() {
               disabled={!hasAgreedToTerms}
               type="submit"
             >
-              {isloading ? 'Cadastrando' : 'Cadastrar'}
+              {isloading ? 'Cadastrando' : 'Continuar'}
             </button>
           </div>
         </div>
       </form>
       <ToastNotification />
-    </>
+    </main>
   );
 }
