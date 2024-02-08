@@ -1,3 +1,4 @@
+import React, { MouseEventHandler } from "react";
 import Link from "next/link";
 import Female from "./assets/female";
 import HouseComponent from "./assets/house";
@@ -5,6 +6,21 @@ import Icon from "./assets/logo";
 import Male from "./assets/Men";
 
 function  NameSexo() {
+    const [maleSelector, setMaleSelector] = React.useState(false);
+    const [femaleSelector, setFemaleSelector] = React.useState(false);
+
+
+    const botaoselectedmale = maleSelector ? "flex justify-center flex-col items-center border border-solid border-primary/purple  gap-1 px-1 py-2 bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2" : "flex justify-center flex-col items-center border border-gray/300 border-dashed gap-1 px-1 py-2 bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2";
+    const buttonSelectFemale = femaleSelector ? "flex justify-center flex-col items-center border border-solid border-primary/purple  gap-1 px-1 py-2 bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2" : "flex justify-center flex-col items-center border border-gray/300 border-dashed gap-1 px-1 py-2 bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2";
+    function handleMaleSelector() {
+        setMaleSelector(true);
+        setFemaleSelector(false);
+    }
+    function handleFemaleSelector() {
+        setFemaleSelector(true);
+        setMaleSelector(false);
+    }
+    
     return (
         <div className="flex h-screen flex-col font-quicksand text-primary/purple bg-gray-100">
             <header className="flex w-full  relative justify-center border-b ">
@@ -30,14 +46,23 @@ function  NameSexo() {
                 <div className="text-gray/400 mt-6">
                     <h2 className="text-center font-semibold text-base">Qual o sexo do seu Pet?</h2>
                     <div className="flex justify-center gap-4 mt-4 ">
-                        <div className=" flex justify-center flex-col items-center border border-gray/300 border-dashed gap-1 px-1 py-2 bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2">
+                        <button 
+                            className={botaoselectedmale}
+                            type='button'
+                            onClick={handleMaleSelector}
+                            
+                        >
                             <Male />
                             <p className="text-sm font-semibold text-center">Macho</p>
-                        </div>
-                        <div className="flex justify-center flex-col items-center border border-gray/300 border-dashed gap-1 px-1 py-2  bg-white w-[133px] h-[133px] rounded-[32px] hover:border-solid hover:border-primary/purple hover:border-2">
+                        </button>
+                        <button 
+                            className={buttonSelectFemale}
+                            type='button'
+                            onClick={handleFemaleSelector}
+                        >
                             <Female />
                             <p className="text-sm font-semibold text-center">Fêmea</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
                 <div className="mt-8 flex justify-center gap-4">
